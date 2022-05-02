@@ -6,6 +6,8 @@
   - Only clone the main branch
   - The repo can be public or private
 - Enable the GitHub Action
+  - In `Settings / Actions`
+    - Enable read/write to GitHub Token
 
 ## Using GitHub Web Editor
 
