@@ -301,9 +301,19 @@ kic cluster create
 
 ```
 
-## Setup a new GitOps Repo
+## Setup your GitOps Repo
 
+- Our GitOps repo is shared for ease of evaluating
+- At some point, you will want your own GitOps repo for security and isolation
 - Setup a new [GitOps repo](docs/GitOpsRepo.md)
+
+## Setup your Azure Subscription
+
+- Like our GitOps repo, our Azure subscription is shared for ease of evaluating
+- You will want to setup your own Azure subscription
+- If you plan to use Azure Arc or HCI
+  - Request a `sponsored subscription` from AIRS
+- todo - work in progress
 
 ## Create a Fleet
 

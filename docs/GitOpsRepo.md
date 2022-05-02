@@ -82,6 +82,8 @@ git push -u origin $MY_FLEET
 
 ## Test GitOps Automation
 
+> You only have to do this step to test GitHub Actions
+
 - Make sure the GitHub Action is enabled
 
   ```bash
@@ -109,7 +111,7 @@ git push -u origin $MY_FLEET
 cd $REPO_BASE
 
 # cluster name must be unique
-flt create --gitops --ssl $AKDC_SSL -c $MY_CLUSTER
+flt create  -c $MY_CLUSTER
 
 # update repo
 git pull
@@ -127,7 +129,7 @@ git push
 
 - Check the setup status
   - This command will not work until the SSHD service starts on the VM
-    - Retry if you get a timeout
+    - Retry if you get `Connection timed out`
     - Run the command until you get `complete`
 
     ```bash
@@ -136,7 +138,7 @@ git push
 
     ```
 
-- Check heartbeat and flux
+- Check flux and heartbeat
 
   ```bash
 
