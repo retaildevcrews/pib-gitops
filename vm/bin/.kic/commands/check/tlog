@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#name: tlog
+#short: Check Virtual Tlog status on the local cluster
+
+http "https://${AKDC_FQDN}/tlog/version"

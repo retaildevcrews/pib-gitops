@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#name: groups
+#short: List Azure groups
+
+az group list -o table | sort | grep -e central- -e east- -e west- -e corp- -e retail-edge -e fleet

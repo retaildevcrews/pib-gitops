@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# name: sync
+# short: Force Flux to sync (reconcile) to the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+flux reconcile source git gitops && kubectl get pods -A

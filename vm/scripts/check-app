@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ $(kubectl get po -A) == *"$1"* ]]
+then
+   echo "$(hostname) found"
+else
+   echo "$(hostname) not found"
+fi

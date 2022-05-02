@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# name: delete
+# short: delete a DNS entry
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+set -e
+
+host=$1
+
+if [ "$host" = "" ]
+then
+    echo "Usage: flt dns delete hostName"
+    exit 0
+fi
+
+if ! az account show -o table > /dev/null
+then
+    echo "Please login to Azure"
+    exit 0
+fi
+
+# delete the old DNS entry
+az network dns record-set a delete \
+-g "$AKDC_DNS_RG" \
+-z "$AKDC_SSL" \
+-n "$host" \
+-o table

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "$(curl -s https://"$(hostname).cseretail.com/heartbeat/17")  $(hostname)"

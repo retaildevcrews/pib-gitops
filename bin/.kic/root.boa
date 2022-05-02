@@ -1,0 +1,30 @@
+###
+# root description and commands
+###
+
+root
+	name: kic
+	short: Kubernetes in Codespaces CLI
+	long: Kubernetes in Codespaces CLI\n\n  A CLI for automating many Kubernetes development tasks
+
+runCommand
+	path: pods
+
+runCommand
+	path: svc
+
+runCommand
+	path: events
+
+runCommand
+	path: env
+
+command
+	name: build
+	short: Build local apps
+
+runCommand
+	path: build/imdb
+
+runCommand
+	path: build/webv

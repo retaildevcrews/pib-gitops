@@ -1,0 +1,30 @@
+name: GitOps Deploy
+
+on:
+
+  push:
+    paths:
+    - '.github/workflows/gitops.yaml'
+    - '**/autogitops/**'
+    - 'config/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Docker pull
+      run: |
+        docker pull ghcr.io/retaildevcrews/autogitops:beta
+
+    - name: GitOps Deploy
+      run: |
+        docker run \
+        --name ago \
+        --rm \
+        -v $(pwd):/ago \
+        ghcr.io/retaildevcrews/autogitops:beta

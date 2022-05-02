@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# name: az-login
+# short: Log in to Azure using Managed Identity
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+az login --identity -o table

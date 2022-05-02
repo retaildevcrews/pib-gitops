@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# name: set-fleet
+# short: Set the current fleet
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+if [ "$1" = "" ]
+then
+  echo "Usage: flt set-fleet fleetBranch"
+  exit 0
+fi
+
+set -e
+
+git -C "$REPO_BASE" checkout "$1" > /dev/null 2>&1
+git -C "$REPO_BASE" pull > /dev/null 2>&1
+
+set +e
+
+cli="$(dirname "$REPO_BASE")/cli"
+
+if [ -d "$cli" ]
+then
+  git -C "$cli" checkout main > /dev/null 2>&1
+  git -C "$cli" checkout "$1" > /dev/null 2>&1
+  git -C "$cli" pull > /dev/null 2>&1
+fi
+
+cli="$(dirname "$REPO_BASE")/akdc"
+
+if [ -d "$cli" ]
+then
+  git -C "$cli" checkout main > /dev/null 2>&1
+  git -C "$cli" checkout "$1" > /dev/null 2>&1
+  git -C "$cli" pull > /dev/null 2>&1
+fi

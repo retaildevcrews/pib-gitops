@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#name: login
+#short: Login to Azure using the project's Service Principal
+
+az login --service-principal --username "$AKDC_SP_ID" --tenant "$AKDC_TENANT" --password "$AKDC_SP_KEY"

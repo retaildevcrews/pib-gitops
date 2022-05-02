@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# verify all 3 kustomizations are setup
+if [ "$(flux get kustomizations 2>/dev/null | grep -c -e flux-system -e apps -e bootstrap)" = 3 ] &&
+   # verify all kustomizations are Ready
+   [ "$(flux get kustomizations 2>/dev/null | grep -e flux-system -e apps -e bootstrap | cut -f2 | grep -c -e False)" = 0 ]
+then
+	echo "$(hostname) success"
+else
+	echo "$(hostname) failed"
+fi

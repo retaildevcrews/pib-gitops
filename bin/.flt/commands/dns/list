@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# name: list
+# short: List DNS entries
+
+if ! az account show -o table > /dev/null
+then
+    echo "Please login to Azure"
+    exit 0
+fi
+
+az network dns record-set a list -g "$AKDC_DNS_RG" -z "$AKDC_SSL" --query '[].name' -o tsv | sort

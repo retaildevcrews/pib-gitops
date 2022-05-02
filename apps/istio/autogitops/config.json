@@ -1,0 +1,8 @@
+{
+    "name": "istio",
+    "namespace": "istio-system",
+    "targetDir": "bootstrap",
+    "targets": [
+        "all"
+    ]
+}

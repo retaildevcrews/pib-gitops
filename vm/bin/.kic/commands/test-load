@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+echo "$@"
+docker run --net host --rm ghcr.io/cse-labs/webv-red:latest --server https://${AKDC_FQDN} "$@"

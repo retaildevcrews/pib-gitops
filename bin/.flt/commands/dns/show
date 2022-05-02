@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# name: show
+# short: Get a DNS entry by host name
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+set -e
+
+host=$1
+
+if [ "$host" = "" ]
+then
+    echo "Usage: flt dns get hostName"
+    exit 0
+fi
+
+if ! az account show -o table > /dev/null
+then
+    echo "Please login to Azure"
+    exit 0
+fi
+
+# delete the old DNS entry
+az network dns record-set a show \
+-g "$AKDC_DNS_RG" \
+-z "$AKDC_SSL" \
+-n "$host"

@@ -1,0 +1,38 @@
+###
+# root description and commands
+###
+
+root
+	name: kic
+	short: Kubernetes in Codespaces CLI
+	long: Kubernetes in Codespaces CLI\n\n  A CLI for automating many Kubernetes fleet tasks
+
+runCommand
+	path: pods
+
+runCommand
+	path: az-login
+
+runCommand
+	path: pull
+
+runCommand
+	path: svc
+
+runCommand
+	path: events
+
+# root commands with no sub-commands
+runCommand
+	path: sync
+
+# hide unused command
+command
+	name: fleet
+	hidden: true
+
+popCommand
+
+command
+	name: targets
+	hidden: true

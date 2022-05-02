@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# name: add
+# short: Add a DNS entry
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+set -e
+
+host=$1
+pip=$2
+
+if [ "$host" = "" ] || [ "$pip" = "" ]
+then
+  echo "Usage: flt dns add hostName ipAddress"
+  exit 0
+fi
+
+if ! az account show -o table > /dev/null
+then
+  echo "Please login to Azure"
+  exit 0
+fi
+
+# get the old IP
+old_ip=$(az network dns record-set a list \
+--query "[?name=='$host'].{IP:aRecords}" \
+--resource-group "$AKDC_DNS_RG" \
+--zone-name "$AKDC_SSL" \
+-o json | jq -r '.[].IP[].ipv4Address' | tail -n1)
+
+# delete old DNS entry if exists
+if [ "$old_ip" != "" ] && [ "$old_ip" != "$pip" ]
+then
+  echo "Deleting old IP: $old_ip"
+  # delete the old DNS entry
+  az network dns record-set a remove-record \
+  -g "$AKDC_DNS_RG" \
+  -z "$AKDC_SSL" \
+  -n "$host" \
+  -a "$old_ip" -o table
+fi
+
+if [ "$old_ip" != "$pip" ]
+then
+  echo "Adding host: $host"
+  # create DNS record
+  az network dns record-set a add-record \
+  -g "$AKDC_DNS_RG" \
+  -z "$AKDC_SSL" \
+  -n "$host" \
+  -a "$pip" \
+  --ttl 10 -o table
+fi

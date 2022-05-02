@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# name: events
+# short: Get all Kubernetes events on the local dev cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+kubectl get events --all-namespaces --sort-by='.metadata.creationTimestamp'

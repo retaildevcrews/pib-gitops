@@ -1,0 +1,10 @@
+{
+    "name": "heartbeat",
+    "namespace": "heartbeat",
+    "imageName": "ghcr.io/cse-labs/heartbeat",
+    "imageTag": "latest",
+    "targetDir": "bootstrap",
+    "targets": [
+        "all"
+    ]
+}
