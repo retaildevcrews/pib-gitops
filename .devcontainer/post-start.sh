@@ -9,7 +9,7 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    post-start start" >> "$HOME/status"
 if [ "$(git branch --show-current)" != "main" ]
 then
     echo "Synching with main branch"
-    .devcontainer/sync-main-branch.sh
+    ### todo - uncomment .devcontainer/sync-main-branch.sh
 fi
 
 # update the base docker images

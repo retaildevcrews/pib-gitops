@@ -35,15 +35,16 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     echo "export AKDC_REPO=$AKDC_REPO"
     echo "export AKDC_SSL=$AKDC_SSL"
     echo "export AKDC_GITOPS=$AKDC_GITOPS"
-
-    echo ""
-    echo "compinit"
+    echo "export AKDC_VM_REPO=$AKDC_VM_REPO"
 
     echo ""
     echo "if [ \"\$PAT\" != \"\" ]"
     echo "then"
     echo "    export GITHUB_TOKEN=\$PAT"
     echo "fi"
+
+    echo ""
+    echo "compinit"
 
 } >> "$HOME/.zshrc"
 
