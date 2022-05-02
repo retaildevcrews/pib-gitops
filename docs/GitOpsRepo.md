@@ -26,7 +26,6 @@
   - AKDC_TENANT - Azure tenant ID
   - AKDC_SP_ID  - Azure Service Principal ID
   - AKDC_SP_KEY - Azure Service Principal Key
-- Login to Azure and make sure you have permissions
 
 ## Add Codespaces Secrets
 
@@ -61,7 +60,6 @@
 - Login to Azure
   - `flt az login`
     - This will fail if your Azure secrets are not set correctly
-- todo - work in progress
 
 ## Create a test fleet
 
@@ -71,8 +69,9 @@
 
 ```bash
 
-# this has to be unique
+# these have to be unique
 export MY_FLEET=my-fleet
+export MY_CLUSTER=my-test-cluster-101
 
 git pull
 git checkout -b $MY_FLEET
@@ -87,9 +86,6 @@ git push -u origin $MY_FLEET
 - Make sure the GitHub Action is enabled
 
   ```bash
-
-  # cluster name must be unique
-  export MY_CLUSTER=my-test-cluster-101
 
   git pull
 
@@ -175,8 +171,6 @@ git push
 - Turn on pre-build from the portal
   - This is optional and recommended
     - Wait until everything is working before enabling pre-build
+- Create a prebuild secret as a `repo secret`
   - CODESPACES_PREBUILD_TOKEN
     - A GitHub PAT with repo and package permissions
-      - Repo secret works
-        - It cannot be a personal secret
-        - todo - I'm not sure if this can be an `org secret` or has to be a `repo secret`
