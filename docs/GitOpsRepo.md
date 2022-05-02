@@ -2,30 +2,25 @@
 
 ## Create a new repo
 
-- todo - convert repo into template and create from template
-  - is there a way to automate the updates from a template?
-- Fork retaildevcrews/edge-gitops
-  - Only fork the main branch
+- Create a new repo from this template: `retaildevcrews/gitops-template`
+  - Only clone the main branch
   - The repo can be public or private
 - Enable the GitHub Action
 
 ## Using GitHub Web Editor
 
+> You can skip this step if you're using `cseretail.com`
+
 - Modify .devcontainer/on-create.sh
   - Replace the following
-    - export AKDC_MI=yourManagedIdentity
-    - export AKDC_REPO=yourOrg/yourGitOpsRepo
     - export AKDC_SSL=your-domain.com
-    - export AKDC_VM_REPO=gitops
-    - export PATH="$PATH:$(dirname "$REPO_BASE")/bin"
   - Commit changes
 
 ## Add GitHub Azure Secrets
 
 > Make sure to enable the new repo for each secret
 
-- todo - assumes you are using ours for now
-  - Contact the platform team for AKDC_* values for our subscription
+- Contact the platform team for AKDC_* values for our subscription
 - Add the following personal GitHub secrets
   - PAT         - your GitHub PAT with repo and package permissions
   - AKDC_TENANT - Azure tenant ID
@@ -49,54 +44,13 @@
   - AKDC_ID_RSA_PUB
     - `cat $HOME/.ssh/id_rsa.pub | base64 -w 0`
       - Make sure not to include the `%` on the end
+  - AKDC_MI
+    - Azure resource path to Managed Identity
+      - /subscriptions/{miSubscription}/resourcegroups/{miRG}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{miName}
 
 ## Repo Setup
 
 - Open the repo in Codespaces to complete the rest of the setup
-- Add /bin and /vm from retaildevcrews/akdc main branch
-
-  ```bash
-
-  cd ..
-  git clone https://github.com/retaildevcrews/akdc
-  cp -R akdc/bin $REPO_BASE
-  cp -R akdc/vm $REPO_BASE
-  rm -rf akdc
-  cd $REPO_BASE
-
-  ```
-
-## Setup Bug
-
-- Run the following commands to fix completions
-- Exit and restart terminal
-
-  ```bash
-
-  flt completion zsh > $HOME/.oh-my-zsh/completions/_flt
-  flux completion zsh > $HOME/.oh-my-zsh/completions/_flux
-  k3d completion zsh > $HOME/.oh-my-zsh/completions/_k3d
-  kic completion zsh > $HOME/.oh-my-zsh/completions/_kic
-  kubectl completion zsh > $HOME/.oh-my-zsh/completions/_kubectl
-
-  echo "cluster*" > .gitignore
-
-  exit
-
-  ```
-
-## Commit and Push to your repo
-
-- Run `git add, commit and push`
-
-  ```bash
-
-  git pull
-  git add .
-  git commit -am "added cli"
-  git push
-
-  ```
 
 ## Validate Codespace
 
@@ -117,9 +71,12 @@
 
 ```bash
 
+# this has to be unique
+export MY_FLEET=my-fleet
+
 git pull
-git checkout -b my-fleet
-git push -u origin my-fleet
+git checkout -b $MY_FLEET
+git push -u origin $MY_FLEET
 
 ```
 
@@ -129,10 +86,13 @@ git push -u origin my-fleet
 
   ```bash
 
+  # cluster name must be unique
+  export MY_CLUSTER=my-test-cluster-101
+
   git pull
 
   # cluster name must be unique
-  flt create -c my-test-cluster-101 --gitops-only
+  flt create -c $MY_CLUSTER --gitops-only
 
   # check the action to make sure it runs correctly
 
@@ -149,7 +109,7 @@ git push -u origin my-fleet
 cd $REPO_BASE
 
 # cluster name must be unique
-flt create --gitops --ssl $AKDC_SSL -c my-test-cluster-101
+flt create --gitops --ssl $AKDC_SSL -c $MY_CLUSTER
 
 # update repo
 git pull
@@ -193,7 +153,7 @@ git push
 
   ```bash
 
-  flt delete my-test-cluster-101
+  flt delete $MY_CLUSTER
 
   ```
 
@@ -202,8 +162,8 @@ git push
   ```bash
 
   git checkout main
-  git branch -D my-fleet
-  git push origin --delete my-fleet
+  git branch -D $MY_FLEET
+  git push origin --delete $MY_FLEET
   git pull
 
   ```
