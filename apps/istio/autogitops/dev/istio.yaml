@@ -12,15 +12,15 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - "*.cseretail.com"
+        - "*"
       tls:
-        httpsRedirect: true
+        httpsRedirect: false
     - port:
         number: 443
         name: https
         protocol: HTTPS
       hosts:
-        - "*.cseretail.com"
+        - "*"
       tls:
         mode: SIMPLE
         credentialName: ssl-cert
