@@ -8,6 +8,7 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    on-create start" >> "$HOME/status"
 export REPO_BASE=$PWD
 export AKDC_REPO=$GITHUB_REPOSITORY
 export AKDC_VM_REPO=gitops
+export AKDC_GITOPS=true
 
 export PATH="$PATH:$REPO_BASE/bin"
 export GOPATH="$HOME/go"
@@ -34,6 +35,7 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     echo "export REPO_BASE=$REPO_BASE"
     echo "export AKDC_REPO=$AKDC_REPO"
     echo "export AKDC_VM_REPO=$AKDC_VM_REPO"
+    echo "export AKDC_GITOPS=$AKDC_GITOPS"
 
     echo ""
     echo "if [ \"\$PAT\" != \"\" ]"
