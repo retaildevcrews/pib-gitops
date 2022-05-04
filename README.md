@@ -13,6 +13,12 @@
 ## Work in Progress - todo
 
 - run ssh-keygen to generate id_rsa if not exists
+- login to azure
+- create Managed Identity
+- Save your PAT (use PAT if set - explain why)
+- `echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
+- `chmod 600 "$HOME/.ssh/akdc.pat"
+- create a single cluster fleet
 
 
 ## Onboarding
