@@ -10,6 +10,11 @@
 - kevinshah
 - wabrez
 
+## Work in Progress - todo
+
+- run ssh-keygen to generate id_rsa if not exists
+
+
 ## Onboarding
 
 - Request a test fleet from the Platform Team

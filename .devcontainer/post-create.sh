@@ -16,14 +16,12 @@ then
 fi
 
 # add shared ssh key
-# todo - wrap in if block
-echo "$AKDC_ID_RSA" | base64 -d > "$HOME/.ssh/id_rsa"
-echo "$AKDC_ID_RSA_PUB" | base64 -d > "$HOME/.ssh/id_rsa.pub"
-
-# set file mode
-chmod 600 "$HOME"/.ssh/id*
-chmod 600 "$HOME"/.ssh/certs.*
-chmod 600 "$HOME"/.ssh/*.key
+if [ "$AKDC_ID_RSA" != "" ] && [ "$AKDC_ID_RSA_PUB" != "" ]
+then
+    echo "$AKDC_ID_RSA" | base64 -d > "$HOME/.ssh/id_rsa"
+    echo "$AKDC_ID_RSA_PUB" | base64 -d > "$HOME/.ssh/id_rsa.pub"
+    chmod 600 "$HOME"/.ssh/id*
+fi
 
 # update oh-my-zsh
 git -C "$HOME/.oh-my-zsh" pull
