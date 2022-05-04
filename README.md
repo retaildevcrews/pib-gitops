@@ -19,6 +19,9 @@
 - `echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
 - `chmod 600 "$HOME/.ssh/akdc.pat"
 - create a single cluster fleet
+  - ` flt create -c your-cluster-name`
+    - make sure to specify -b yourBranch if you're not using main
+
 
 
 ## Onboarding
