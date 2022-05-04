@@ -1,9 +1,0 @@
-#!/bin/bash
-
-#name: flux
-#short: Check Flux status on the local cluster
-
-# change to this directory
-#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
-
-flux get kustomization
