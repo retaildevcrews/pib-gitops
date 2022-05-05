@@ -4,5 +4,5 @@
     "name": "imdb",
     "namespace": "imdb",
     "targetDir": "apps",
-    "targets": []
+    "targets": [ ]
 }

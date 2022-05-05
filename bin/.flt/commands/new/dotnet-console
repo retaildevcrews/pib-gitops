@@ -1,6 +1,0 @@
-#!/bin/bash
-
-#name: console
-#short: Create a new dotnet console application
-
-echo "not implemented"

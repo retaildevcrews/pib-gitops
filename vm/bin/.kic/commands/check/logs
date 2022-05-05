@@ -1,9 +1,0 @@
-#!/bin/bash
-
-#name: logs
-#short: Check Logs on the local cluster
-
-# change to this directory
-#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
-
-cat /var/log/cloud-init-output.log

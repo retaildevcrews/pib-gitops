@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# name: pull
-# short: Git pull the akdc repo
-
-# change to this directory
-#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
-
-git -C /home/akdc/akdc pull
