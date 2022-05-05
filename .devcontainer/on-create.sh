@@ -44,6 +44,9 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     echo "fi"
 
     echo ""
+    echo "export AKDC_PAT=\$GITHUB_TOKEN"
+
+    echo ""
     echo "compinit"
 
 } >> "$HOME/.zshrc"
