@@ -87,6 +87,7 @@ sudo chown -R "${AKDC_ME}:${AKDC_ME}" "$HOME"
 
   echo ""
   echo 'complete -F __start_kubectl k'
+  echo 'complete -F __start_kivm kic'
 } >> "$HOME/akdc.bashrc"
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-install complete" >> "$HOME/status"
