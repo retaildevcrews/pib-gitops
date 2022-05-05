@@ -12,7 +12,7 @@
 
 ## Work in Progress - todo
 
-- run ssh-keygen to generate id_rsa if not exists
+- run ssh-keygen to generate id_rsa
 - login to azure
 - create Managed Identity
 - Save your PAT (use PAT if set - explain why)
@@ -20,7 +20,8 @@
 - `chmod 600 "$HOME/.ssh/akdc.pat"
 - create a single cluster fleet
   - ` flt create -c your-cluster-name`
-    - make sure to specify -b yourBranch if you're not using main
+    - do not specify `--arc` if you are using a normal AIRS subscription
+    - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
 
 
 
