@@ -4,7 +4,5 @@
     "name": "imdb",
     "namespace": "imdb",
     "targetDir": "apps",
-    "targets": [
-        "bartr-test-102"
-    ]
+    "targets": [ ]
 }
