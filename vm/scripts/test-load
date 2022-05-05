@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run --rm ghcr.io/cse-labs/webv-red -s "https://$AKDC_FQDN" -f benchmark.json -r --duration 30 --sleep 10
