@@ -10,55 +10,59 @@
 - kevinshah
 - wabrez
 
-## Work in Progress - todo
+## Prerequisites
 
-- run ssh-keygen to generate id_rsa
-- login to azure
-- create Managed Identity
-- Save your PAT (use PAT if set - explain why)
-- `echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
-- `chmod 600 "$HOME/.ssh/akdc.pat"
-- create a single cluster fleet
-  - ` flt create -c your-cluster-name`
-    - do not specify `--arc` if you are using a normal AIRS subscription
-    - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
+> Recommended but not required
 
-
-
-## Onboarding
-
-- Request a test fleet from the Platform Team
-- Follow the [instructions](https://github.com/cse-labs/moss) and join the `Microsoft` and `cse-labs` GitHub orgs
-- Request an invitation to the RetailDevCrews GitHub Org from the platform team
-  - Accept the invitation
-- Validation repos
-  - If you get a 403 or 404 error make sure you joined the org / accepted your invite
-  - <https://github.com/cse-labs/private-test>
-  - <https://github.com/retaildevcrews/private-test>
 - Go through the Kubernetes in Codespaces inner-loop hands-on lab [here](https://github.com/cse-labs/kubernetes-in-codespaces)
   - Repeat until you are comfortable with Codespaces, Kubernetes, Prometheus, Fluent Bit, Grafana, K9s, and our inner-loop process (everything builds on this)
 - Go through the GitOps Automation [Quick Start](https://github.com/bartr/autogitops)
   - Repeat until you are comfortable (GitOps builds on this)
 
+## Click on `User this template` and create your GitOps repo
+
+- Only clone the main branch
+
 ## Setup your GitHub PAT
 
-> We use multiple GitHub Repos, so you have to use a PAT
+> GitOps needs a PAT that can push to this repo
 
 - Create a Personal Access Token (PAT) in your GitHub account
   - Grant repo and package access
   - You can use an existing PAT as long as it has permissions
   - <https://github.com/settings/tokens>
 
-- Grant SSO access to the token
-  - cse-labs
-  - retaildevcrews
-  - Any other tenant you choose
-
 - Create a personal Codespace secret
   - <https://github.com/settings/codespaces>
   - Name: PAT
   - Value: your PAT
   - Grant access to this repo and any other repos you want
+
+## Login to azure
+
+- select your subscription if required
+
+## Save your PAT
+
+- The setup script uses this PAT to setup GitOps
+
+```bash
+
+echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
+chmod 600 "$HOME/.ssh/akdc.pat"
+
+```
+
+## Create SSH cert
+
+- Run `ssh-keygen` to generate $HOME/.ssh/id_rsa
+  - accept the defaults
+
+## Create a single cluster fleet
+
+- ` flt create -c your-cluster-name`
+  - do not specify `--arc` if you are using a normal AIRS subscription
+  - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
 
 ## Create a Codespace
 
