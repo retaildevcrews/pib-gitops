@@ -72,11 +72,8 @@ sudo apt-get update
 
 sudo chown -R "${AKDC_ME}:${AKDC_ME}" "$HOME"
 {
-  echo ""
-  #shellcheck disable=2016,2028
-  echo 'hsort() { read -r; printf "%s\n" "$REPLY"; sort }'
-
   # add path alias
+  echo ""
   echo "alias path='echo \$PATH | sed \"s/:/\\n/g\" | sort'"
 
   # todo - eventually remove this
