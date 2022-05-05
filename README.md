@@ -114,13 +114,9 @@ flt pull
 
 ```
 
-> Note that the create, delete, and groups commands will not work unless you have been granted additional access
-
 ## Deploy the Reference App
 
 - IMDb is the reference app
-
-### If you get a 403 error from `flt targets deploy`, your PAT isn't setup correctly
 
 ```bash
 
@@ -133,7 +129,7 @@ flt targets list
 flt targets clear
 
 # add the central region as a target
-flt targets add region:central
+flt targets add yourClusterName
 
 # deploy the changes
 flt targets deploy
@@ -148,16 +144,7 @@ flt targets deploy
 ## Action not running
 
 - If your action is not running within 10-15 seconds
-- Verify that your PAT has sufficient permissions
-
-### Make sure your PAT has the correct permissions and is authorized for SSO in the orgs
-
-  ```bash
-
-  # try pushing manually
-  git push
-
-  ```
+- Verify that the Action is enabled
 
 ## Check deployment
 
@@ -173,143 +160,17 @@ flt check app imdb
 
 ```
 
-## Create and Deploy a New App
-
-- Create a TestApp from the dotnet WebAPI template
-  - Deploy and test in inner-loop
-  - Deploy and test on the fleet
-
-```bash
-
-# start in the apps directory
-cd /workspaces/edge-gitops/apps
-git pull
-
-# make sure git is "clean"
-#  commit / push as needed
-git status
-
-# create a new dotnet WebAPI app
-# you can use any app name as long as it is PascalCaseAlpha
-# if you use a different app name, you will have to make the docker image public (bug)
-#   you have to be an owner of github/retaildevcrews to do this
-#   or change ci-cd / autogitops.json to point to a ghcr that you control
-# if in doubt, use TestApp or MyApp
-flt new dotnet webapi TestApp
-
-# change to the testapp directory
-cd testapp
-
-```
-
-## Deploy to the fleet
-
-> Start in apps/testapp dir
-
-```bash
-
-# set the target to west region and deploy via GitOps
-flt targets clear
-flt targets add region:west
-flt targets deploy
-
-# wait for ci-cd to finish
-
-# check for the new namespace
-flt sync
-flt check app testapp
-
-# undeploy testapp
-git pull
-flt targets clear
-flt targets deploy
-
-# wait for ci-cd to finish
-flt sync
-
-# it will take a few seconds for the ns to be deleted
-flt check app testapp
-
-```
-
-## inner-loop
-
-> Start in apps/testapp dir
-
-- Remove apps if necessary
-
-  ```bash
-
-  # check the pods
-  kic pods
-
-  # if any pods are running app, monitoring, or logging recreate the cluster
-  kic cluster create
-
-  ```
-
-- Build and deploy TestApp
-
-> Start in apps/testapp dir
-
-  ```bash
-
-  git pull
-
-  # build test app
-  kic app build
-
-  # rebuild cluster and deploy testapp + webv
-  kic app deploy
-
-  # wait for pods to start
-  kic pods
-
-  # check the app
-  kic check app
-
-  # check all
-  kic check all
-
-  # run tests
-  kic test load &
-  kic test integration
-
-  ```
-
-## Clean up
-
-```bash
-
-# start in the apps directory
-cd /workspaces/edge-gitops/apps
-
-# remove test app
-git pull
-rm -rf testapp
-git commit -am "removed testapp"
-git push
-
-# your repo should be "clean"
-
-# re-create the cluster
-kic cluster create
-
-```
-
-## Setup your GitOps Repo
-
-- Our GitOps repo is shared for ease of evaluating
-- At some point, you will want your own GitOps repo for security and isolation
-- Setup a new [GitOps repo](docs/GitOpsRepo.md)
-
 ## Setup your Azure Subscription
 
-- Like our GitOps repo, our Azure subscription is shared for ease of evaluating
-- You will want to setup your own Azure subscription
 - If you plan to use Azure Arc or HCI
   - Request a `sponsored subscription` from AIRS
-- todo - work in progress
+- todo - additional setup is required
+  - domain name
+  - DNS
+  - SSL wildcard cert
+  - Managed Identity
+  - Key Vault
+  - Service Principal
 
 ## Create a Fleet
 
