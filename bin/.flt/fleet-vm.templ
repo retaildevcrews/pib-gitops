@@ -159,9 +159,7 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')  installing az cli" >> /home/akdc/status
 curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
 
-# todo - fix this
-#if [ "$AKDC_MI" == "" ]
-if [ "$AKDC_MI" != "" ]
+if [ "$AKDC_MI" == "" ]
 then
   echo "$(date +'%Y-%m-%d %H:%M:%S')  skipping azure login" >> /home/akdc/status
   echo "$AKDC_PAT" > .ssh/akdc.pat
