@@ -27,6 +27,8 @@
 ## Setup your GitHub PAT
 
 > GitOps needs a PAT that can push to this repo
+>
+> You can use your Codespaces token but it will be deleted when your Codespace is deleted and GitOps will quit working
 
 - Create a Personal Access Token (PAT) in your GitHub account
   - Grant repo and package access
@@ -72,27 +74,41 @@ AKDC_REPO=thisRepoTenant/thisRepoName
 
 ```
 
-## Login to azure
-
-- Run `az login`
-  - Select your subscription if required
-
 ## Save your PAT
 
 - The setup script uses this PAT to setup GitOps
 
 ```bash
 
-echo "$AKDC_PAT" > "$HOME/.ssh/akdc.pat"
+echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
 chmod 600 "$HOME/.ssh/akdc.pat"
 
 ```
+
+## Login to azure
+
+- Run `az login`
+  - Select your subscription if required
 
 ## Create a single cluster fleet
 
 - ` flt create -c your-cluster-name`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
+
+## Check setup status
+
+> The `flt check` commands will fail until SSHD is running, so you may get errors for 30 second or so
+
+- Run until you get a status of "complete"
+  - Usually 4-5 min
+
+```bash
+
+# check setup status
+flt check setup
+
+```
 
 ## Check your Fleet
 
@@ -144,7 +160,8 @@ flt targets deploy
 ## Action not running
 
 - If your action is not running within 10-15 seconds
-- Verify that the Action is enabled
+  - Verify that the Action is enabled
+  - If the action fails, verify that the token has read and write access
 
 ## Check deployment
 
@@ -155,10 +172,44 @@ flt targets deploy
 # force flux to sync
 flt sync
 
-# check that imdb is deployed to central
+# check that imdb is deployed to your cluster
 flt check app imdb
 
 ```
+
+## Delete your test cluster
+
+```bash
+
+git pull
+
+flt cluster delete
+
+# delete your cluster config
+rm ips
+rm -rf config/yourClusterName
+
+# commit and push to GitHub
+
+```
+
+## Create a Fleet
+
+- We generally group our fleets together in one resource group
+- An example of creating a 3 cluster fleet
+  - this will create the following meta data which can be used as targets
+    - region:central
+    - zone:central-tx
+    - district:central-tx-atx
+    - store:central-tx-atx-801
+
+  ```bash
+
+  flt create -g my-fleet -c central-tx-atx-801
+  flt create -g my-fleet -c east-ga-atl-801
+  flt create -g my-fleet -c west-wa-sea-801
+
+  ```
 
 ## Setup your Azure Subscription
 
@@ -171,16 +222,6 @@ flt check app imdb
   - Managed Identity
   - Key Vault
   - Service Principal
-
-## Create a Fleet
-
-- Create a [Fleet](docs/CreateFleet.md)
-
-## Observability
-
-- Retail Edge provides logs, metrics, and dashboards out of the box
-- The setup is currently "semi-automated"
-- [Observability](docs/Observability.md) setup
 
 ## How to file issues and get help
 
