@@ -1,0 +1,8 @@
+{
+	"environment": "dev",
+	"region": "bartr",
+	"zone": "bartr-test",
+	"district": "bartr-test-102",
+	"store": "bartr-test-102",
+	"domain": "bartr-test-102."
+}
