@@ -19,9 +19,10 @@
 - Go through the GitOps Automation [Quick Start](https://github.com/bartr/autogitops)
   - Repeat until you are comfortable (GitOps builds on this)
 
-## Click on `User this template` and create your GitOps repo
+## Click on `Use this template` and create your GitOps repo
 
 - Only clone the main branch
+- Additional instructions reference your new GitHub repo
 
 ## Setup your GitHub PAT
 
@@ -38,9 +39,41 @@
   - Value: your PAT
   - Grant access to this repo and any other repos you want
 
+## Create a Codespace
+
+- Create your Codespace from your new repo
+  - Click on `Code` then click `New Codespace`
+
+Once Codespaces is running:
+
+> Make sure your terminal is running zsh - bash is not supported and will not work
+>
+> If it's running bash, exit and create a new terminal (this is a random bug in Codespaces)
+
+## Validate your setup
+
+> It is a best practice to close the first shell and start a new one - sometimes the shell starts before setup is complete
+
+```bash
+
+# check your PAT - the two values should be the same
+# if PAT is not set correctly, delete this Codespace and follow the instructions above for setting up your PAT
+echo $PAT
+echo $GITHUB_TOKEN
+
+# check your env vars
+flt env
+
+# output
+AKDC_GITOPS=true
+AKDC_REPO=thisRepoTenant/thisRepoName
+
+```
+
 ## Login to azure
 
-- select your subscription if required
+- Run `az login`
+  - Select your subscription if required
 
 ## Save your PAT
 
@@ -63,19 +96,6 @@ chmod 600 "$HOME/.ssh/akdc.pat"
 - ` flt create -c your-cluster-name`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
-
-## Create a Codespace
-
-> Since we use GitHub secrets, do not fork the repo or you won't get the secrets and nothing will work
-
-- Create your Codespace from the main branch
-  - Click on `Code` then click `New Codespace`
-
-Once Codespaces is running:
-
-> Make sure your terminal is running zsh - bash is not supported and will not work
->
-> If it's running bash, exit and create a new terminal (this is a random bug in Codespaces)
 
 ## Test Fleet
 
