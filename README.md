@@ -56,9 +56,10 @@ Once Codespaces is running:
 
 ```bash
 
-# check your PAT - the two values should be the same
+# check your PAT - the three values should be the same
 # if PAT is not set correctly, delete this Codespace and follow the instructions above for setting up your PAT
 echo $PAT
+echo $AKDC_PAT
 echo $GITHUB_TOKEN
 
 # check your env vars
@@ -66,6 +67,7 @@ flt env
 
 # output
 AKDC_GITOPS=true
+AKDC_PAT=yourPAT
 AKDC_REPO=thisRepoTenant/thisRepoName
 
 ```
@@ -81,59 +83,16 @@ AKDC_REPO=thisRepoTenant/thisRepoName
 
 ```bash
 
-echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
+echo "$AKDC_PAT" > "$HOME/.ssh/akdc.pat"
 chmod 600 "$HOME/.ssh/akdc.pat"
 
 ```
-
-## Create SSH cert
-
-- Run `ssh-keygen` to generate $HOME/.ssh/id_rsa
-  - accept the defaults
 
 ## Create a single cluster fleet
 
 - ` flt create -c your-cluster-name`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
-
-## Test Fleet
-
-- Request a test fleet from the Platform Team
-- Once your fleet is created, the Platform Team will provide the branch name
-- Do all of your work in this branch
-- Do not PR your branch to main
-- Do not use other branches
-  - These branches are used for customer demos
-  - Some CLI commands can change behavior
-
-### Checkout your branch
-
-  ```bash
-
-  # you should already be in this directory
-  cd /workspaces/edge-gitops
-  git pull
-  git checkout yourBranchName
-  git pull
-
-  ```
-
-## Sync Your Branch With Main Branch
-
-> FleetReadme.md is a fleet specific doc and is not synched with main
-
-- The following directories are automatically synched with the main branch when you start a Codespace
-  - README.md
-  - docs
-  - .devcontainer
-  - .github
-- You can manually sync by running `.devcontainer/sync-main-branch.sh` from Codespaces
-- The changes are not committed or pushed to your repo to avoid overwriting files
-  - You should commit and push the changes after reviewing
-- You can control what is synced by modifying
-  - .devcontainer/post-start.sh
-  - .devcontainer/sync-main-branch.sh
 
 ## Check your Fleet
 
