@@ -8,11 +8,10 @@
 - bartr
 - devwag
 - kevinshah
-- wabrez
 
 ## Prerequisites
 
-> Recommended but not required
+> Recommended learning
 
 - Go through the Kubernetes in Codespaces inner-loop hands-on lab [here](https://github.com/cse-labs/kubernetes-in-codespaces)
   - Repeat until you are comfortable with Codespaces, Kubernetes, Prometheus, Fluent Bit, Grafana, K9s, and our inner-loop process (everything builds on this)
@@ -22,24 +21,7 @@
 ## Click on `Use this template` and create your GitOps repo
 
 - Only clone the main branch
-- Additional instructions reference your new GitHub repo
-
-## Setup your GitHub PAT
-
-> GitOps needs a PAT that can push to this repo
->
-> You can use your Codespaces token but it will be deleted when your Codespace is deleted and GitOps will quit working
-
-- Create a Personal Access Token (PAT) in your GitHub account
-  - Grant repo and package access
-  - You can use an existing PAT as long as it has permissions
-  - <https://github.com/settings/tokens>
-
-- Create a personal Codespace secret
-  - <https://github.com/settings/codespaces>
-  - Name: PAT
-  - Value: your PAT
-  - Grant access to this repo and any other repos you want
+- Additional instructions reference your new GitHub repo, not this repo
 
 ## Create a Codespace
 
@@ -54,13 +36,11 @@ Once Codespaces is running:
 
 ## Validate your setup
 
-> It is a best practice to close the first shell and start a new one - sometimes the shell starts before setup is complete
+> It is a best practice to close the first shell and start a new one - sometimes the shell starts before setup is complete and isn't fully configured
 
 ```bash
 
-# check your PAT - the three values should be the same
-# if PAT is not set correctly, delete this Codespace and follow the instructions above for setting up your PAT
-echo $PAT
+# check your PAT - the two values should be the same
 echo $AKDC_PAT
 echo $GITHUB_TOKEN
 
@@ -70,7 +50,7 @@ flt env
 # output
 AKDC_GITOPS=true
 AKDC_PAT=yourPAT
-AKDC_REPO=thisRepoTenant/thisRepoName
+AKDC_REPO=yourRepoTenant/yourRepoName
 
 ```
 
@@ -90,15 +70,41 @@ chmod 600 "$HOME/.ssh/akdc.pat"
 - Run `az login`
   - Select your subscription if required
 
+## Verify ci-cd
+
+- Open the `Actions` tab in your repo at GitHub.com
+  - The action needs read / write permission
+  - You may have to change your default permission
+    - Settings
+      - Actions
+        - General
+
 ## Create a single cluster fleet
 
 - ` flt create -c your-cluster-name`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
 
+## Update your GitOps repo
+
+```bash
+
+# you should see new files from ci-cd
+# if you don't, check the Actions tab
+git pull
+
+# add and commit the ips file
+git add .
+git commit -am "added ips file"
+git push
+
+```
+
 ## Check setup status
 
-> The `flt check` commands will fail until SSHD is running, so you may get errors for 30 second or so
+> flt is the fleet CLI provided by Retail Edge / Pilot-in-a-Box
+>
+> The `flt check` commands will fail until SSHD is running, so you may get errors for 30 seconds or so
 
 - Run until you get a status of "complete"
   - Usually 4-5 min
@@ -111,8 +117,6 @@ flt check setup
 ```
 
 ## Check your Fleet
-
-> flt is the fleet CLI provided by Retail Edge / Pilot-in-a-Box
 
 ```bash
 
@@ -133,6 +137,9 @@ flt pull
 ## Deploy the Reference App
 
 - IMDb is the reference app
+- Normally, the apps would be in separate repos
+  - We include the reference app in this repo for convenience
+  - Heartbeat and Istio are `bootstrap services` and should be in this repo
 
 ```bash
 
@@ -144,7 +151,7 @@ flt targets list
 # clear the targets if not []
 flt targets clear
 
-# add the central region as a target
+# add your cluster as a target
 flt targets add yourClusterName
 
 # deploy the changes
@@ -157,19 +164,17 @@ flt targets deploy
 - <https://github.com/retaildevcrews/edge-gitops/actions>
   - your action should be queued or in-progress
 
-## Action not running
-
-- If your action is not running within 10-15 seconds
-  - Verify that the Action is enabled
-  - If the action fails, verify that the token has read and write access
-
 ## Check deployment
 
 - Once the action completes successfully
 
 ```bash
 
+# you should see imdb added to your cluster
+git pull
+
 # force flux to sync
+# flux will sync on a schedule - this command forces it to sync now for debugging
 flt sync
 
 # check that imdb is deployed to your cluster
@@ -211,17 +216,35 @@ rm -rf config/yourClusterName
 
   ```
 
+## Setup your GitHub PAT
+
+> GitOps needs a PAT that can push to this repo
+>
+> You can use your Codespaces token but it will be deleted when your Codespace is deleted and GitOps will quit working
+
+- Create a Personal Access Token (PAT) in your GitHub account
+  - Grant repo and package access
+  - You can use an existing PAT as long as it has permissions
+  - <https://github.com/settings/tokens>
+
+- Create a personal Codespace secret
+  - <https://github.com/settings/codespaces>
+  - Name: PAT
+  - Value: your PAT
+  - Grant access to this repo and any other repos you want
+
 ## Setup your Azure Subscription
 
-- If you plan to use Azure Arc or HCI
+- If you plan to use Azure Arc
   - Request a `sponsored subscription` from AIRS
-- todo - additional setup is required
-  - domain name
-  - DNS
-  - SSL wildcard cert
-  - Managed Identity
-  - Key Vault
-  - Service Principal
+- Additional setup is required
+  - Contact the Platform Team for more details
+    - domain name
+    - DNS
+    - SSL wildcard cert
+    - Managed Identity
+    - Key Vault
+    - Service Principal
 
 ## How to file issues and get help
 
