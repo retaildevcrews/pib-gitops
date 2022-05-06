@@ -2,6 +2,10 @@
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
+- `Retail Edge` allows you to quickly create Kubernetes clusters running `k3d` in `Azure VMs`
+- These cluster are intended for learning, dev and test
+- For secure or production clusters, we recommend [AKS Secure Baseline](https://github.com/mspnp/aks-baseline)
+
 ## Platform Team Contacts
 
 - anflinch
@@ -228,6 +232,8 @@ rm -rf config/yourClusterName
 > GitOps needs a PAT that can push to this repo
 >
 > You can use your Codespaces token but it will be deleted when your Codespace is deleted and GitOps will quit working
+
+### For production, you want to use a service account instead of your individual account
 
 - Create a Personal Access Token (PAT) in your GitHub account
   - Grant repo and package access
