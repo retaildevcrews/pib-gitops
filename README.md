@@ -23,6 +23,15 @@
 - Only clone the main branch
 - Additional instructions reference your new GitHub repo, not this repo
 
+## Verify ci-cd
+
+- Open the `Actions` tab in your repo at GitHub.com
+  - The action needs read / write permission
+  - You may have to change your default permission
+    - Settings
+      - Actions
+        - General
+
 ## Create a Codespace
 
 - Create your Codespace from your new repo
@@ -48,9 +57,9 @@ echo $GITHUB_TOKEN
 flt env
 
 # output
-AKDC_GITOPS=true
-AKDC_PAT=yourPAT
-AKDC_REPO=yourRepoTenant/yourRepoName
+# AKDC_GITOPS=true
+# AKDC_PAT=yourPAT
+# AKDC_REPO=yourRepoTenant/yourRepoName
 
 ```
 
@@ -69,15 +78,6 @@ chmod 600 "$HOME/.ssh/akdc.pat"
 
 - Run `az login`
   - Select your subscription if required
-
-## Verify ci-cd
-
-- Open the `Actions` tab in your repo at GitHub.com
-  - The action needs read / write permission
-  - You may have to change your default permission
-    - Settings
-      - Actions
-        - General
 
 ## Create a single cluster fleet
 
