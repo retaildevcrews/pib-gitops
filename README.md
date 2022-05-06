@@ -180,6 +180,11 @@ flt sync
 # check that imdb is deployed to your cluster
 flt check app imdb
 
+# curl the IMDb endpoints
+flt curl /version
+flt curl /healthz
+flt curl /readyz
+
 ```
 
 ## Delete your test cluster
@@ -188,7 +193,9 @@ flt check app imdb
 
 git pull
 
-flt cluster delete
+flt delete yourCluster
+
+## you can skip these steps if you're deleting the repo
 
 # delete your cluster config
 rm ips
