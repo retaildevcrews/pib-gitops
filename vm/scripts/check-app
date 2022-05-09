@@ -2,7 +2,7 @@
 
 if [[ $(kubectl get po -A) == *"$1"* ]]
 then
-   echo "$(hostname) found"
+   echo "found"
 else
-   echo "$(hostname) not found"
+   echo "not found"
 fi
