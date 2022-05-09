@@ -2,11 +2,6 @@
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-dns start" >> "$HOME/status"
 
-if [ "$AKDC_ZONE" == "" ]
-then
-  exit 0
-fi
-
 set -e
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-dns start" >> "$HOME/status"

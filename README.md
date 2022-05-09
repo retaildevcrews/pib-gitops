@@ -78,10 +78,16 @@ chmod 600 "$HOME/.ssh/akdc.pat"
 
 ```
 
-## Login to azure
+## Login to Azure
 
 - Run `az login`
   - Select your subscription if required
+
+## Set Flux repo and branch
+
+- Edit `apps/flux-system/autogitops/config.json`
+  - Set `fluxRepo` and `fluxBranch`
+  - Git commit and push
 
 ## Create a single cluster fleet
 
@@ -221,9 +227,10 @@ rm -rf config/yourClusterName
 
   ```bash
 
-  flt create -g my-fleet -c central-tx-atx-801
-  flt create -g my-fleet -c east-ga-atl-801
-  flt create -g my-fleet -c west-wa-sea-801
+  flt create -g my-fleet \
+    -c central-tx-atx-801 \
+    -c east-ga-atl-801 \
+    -c west-wa-sea-801
 
   ```
 

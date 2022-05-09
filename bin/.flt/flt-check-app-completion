@@ -1,3 +1,4 @@
+ai-order-accuracy	AI Order Accuracy app
 heartbeat	Heartbeat app
 imdb	IMDb reference app
 jumpbox	Jump Box (bastion host)
@@ -7,3 +8,5 @@ coredns	K8s Core DNS
 metrics-server	Metrics Server
 testapp	Test App (sample app)
 myapp	My App (sample app)
+pilotapp	Pilot App  (sample app)
+dapr	Dapr service

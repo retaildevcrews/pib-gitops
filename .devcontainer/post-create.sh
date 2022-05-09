@@ -16,10 +16,10 @@ then
 fi
 
 # add shared ssh key
-if [ "$AKDC_ID_RSA" != "" ] && [ "$AKDC_ID_RSA_PUB" != "" ]
+if [ "$ID_RSA" != "" ] && [ "$ID_RSA_PUB" != "" ]
 then
-    echo "$AKDC_ID_RSA" | base64 -d > "$HOME/.ssh/id_rsa"
-    echo "$AKDC_ID_RSA_PUB" | base64 -d > "$HOME/.ssh/id_rsa.pub"
+    echo "$ID_RSA" | base64 -d > "$HOME/.ssh/id_rsa"
+    echo "$ID_RSA_PUB" | base64 -d > "$HOME/.ssh/id_rsa.pub"
     chmod 600 "$HOME"/.ssh/id*
 fi
 

@@ -30,7 +30,7 @@ then
     kubectl create secret -n prometheus generic prom-secrets --from-file "$HOME/.ssh/prometheus.key"
 fi
 
-if [ -d ./bootstrap ]
+if [ -n "$(find ./bootstrap/* -iregex '.*\.\(yaml\|yml\|json\)' 2>/dev/null)" ]
 then
     kubectl apply -f ./bootstrap
     kubectl apply -R -f ./bootstrap

@@ -1,8 +1,3 @@
 #!/bin/bash
 
-if [ "$AKDC_SSL" = "" ]
-then
-    echo "$(curl -s http://"$AKDC_FQDN/heartbeat/17")  $(hostname)"
-else
-    echo "$(curl -s https://"$AKDC_FQDN/heartbeat/17")  $(hostname)"
-fi
+echo "$(curl -s https://"$(hostname).cseretail.com/heartbeat/17")  $(hostname)"

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ### to run manually
-# cd $HOME
-# gitops/vm/setup/akdc-setup.sh
+# cd /home/akdc
+# cli/vm/setup/akdc-setup.sh
 
 # this is the main VM setup script
 

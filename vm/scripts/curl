@@ -5,10 +5,5 @@ then
     echo "Error: /path is required"
     echo "usage: flt curl /path"
 else
-    if [ "$AKDC_SSL" = "" ]
-    then
-        echo "$(curl -s http://"$AKDC_FQDN$1")  $(hostname)"
-    else
-        echo "$(curl -s https://"$AKDC_FQDN$1")  $(hostname)"
-    fi
+    echo "$(curl -s https://"$(hostname).cseretail.com$1")  $(hostname)"
 fi
