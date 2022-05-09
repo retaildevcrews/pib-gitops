@@ -74,7 +74,7 @@ sudo chown -R "${AKDC_ME}:${AKDC_ME}" "$HOME"
   echo ""
   echo "source <(flux completion bash)"
   echo "source <(k3d completion bash)"
-  echo "source <(kic completion bash)"
+  echo "source <(kivm completion bash)"
   echo "source <(kubectl completion bash)"
 
   echo ""

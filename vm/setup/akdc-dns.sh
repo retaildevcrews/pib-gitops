@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$AKDC_SSL" = "" ]
+then
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  skipping dns setup" >> "$HOME/status"
+  exit 0
+fi
+
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-dns start" >> "$HOME/status"
 
 set -e

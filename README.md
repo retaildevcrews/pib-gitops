@@ -67,27 +67,16 @@ flt env
 
 ```
 
-## Save your PAT
-
-- The setup script uses this PAT to setup GitOps
-
-```bash
-
-echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
-chmod 600 "$HOME/.ssh/akdc.pat"
-
-```
-
-## Login to Azure
-
-- Run `az login`
-  - Select your subscription if required
-
 ## Set Flux repo and branch
 
 - Edit `apps/flux-system/autogitops/config.json`
   - Set `fluxRepo` and `fluxBranch`
   - Git commit and push
+
+## Login to Azure
+
+- Run `az login`
+  - Select your subscription if required
 
 ## Create a single cluster fleet
 

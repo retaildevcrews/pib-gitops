@@ -63,7 +63,6 @@ fi
 cd /home/${AKDC_ME} || exit
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  starting" >> status
-echo "$(date +'%Y-%m-%d %H:%M:%S')  flux retries:" >> status
 
 echo "${AKDC_ME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/akdc
 
@@ -146,55 +145,61 @@ gpasswd -a "${AKDC_ME}" sudo
 git clone --depth=1 https://github.com/ohmybash/oh-my-bash.git .oh-my-bash
 cp .oh-my-bash/templates/bashrc.osh-template .bashrc
 
+echo "$AKDC_PAT" > ".ssh/akdc.pat"
+chmod 600 ".ssh/akdc.pat"
+
 # change ownership
-chown -R ${AKDC_ME}:${AKDC_ME} /home/${AKDC_ME}
+chown -R ${AKDC_ME}:${AKDC_ME} "/home/$AKDC_ME"
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  installing base" >> status
 apt-get update
 apt-get install -y apt-utils dialog apt-transport-https ca-certificates
 
-echo "$(date +'%Y-%m-%d %H:%M:%S')  installing az cli" >> /home/akdc/status
-
-# add az cli repo
-curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
-
-apt-get update
-
-apt-get install -y azure-cli
-
-echo "$(date +'%Y-%m-%d %H:%M:%S')  az login start" >> /home/akdc/status
-if [ "$AKDC_DO" = "true" ]
+if [ "$AKDC_MI" != "" ]
 then
-  # login to Azure using the SP
-  az login --service-principal --username "$(cat .ssh/sp_name)" --tenant "$(cat .ssh/sp_tenant)" --password "$(cat .ssh/sp_key)" -o table
-  sudo -HEu akdc az login --service-principal --username "$(cat .ssh/sp_name)" --tenant "$(cat .ssh/sp_tenant)" --password "$(cat .ssh/sp_key)" -o table
-else
-  az login --identity -o table
-  sudo -HEu akdc az login --identity -o table
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  installing az cli" >> /home/akdc/status
+
+  # add az cli repo
+  curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
+  echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
+
+  apt-get update
+
+  apt-get install -y azure-cli
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  az login start" >> /home/akdc/status
+  if [ "$AKDC_DO" = "true" ]
+  then
+    # login to Azure using the SP
+    az login --service-principal --username "$(cat .ssh/sp_name)" --tenant "$(cat .ssh/sp_tenant)" --password "$(cat .ssh/sp_key)" -o table
+    sudo -HEu akdc az login --service-principal --username "$(cat .ssh/sp_name)" --tenant "$(cat .ssh/sp_tenant)" --password "$(cat .ssh/sp_key)" -o table
+  else
+    az login --identity -o table
+    sudo -HEu akdc az login --identity -o table
+  fi
+
+  #shellcheck disable=2181
+  if [ "$?" != 0 ]
+  then
+      echo "$(date +'%Y-%m-%d %H:%M:%S')  Azure login failed" >> /home/akdc/status
+      echo "Azure login failed"
+      exit 1
+  fi
+
+  set -e
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  $(az account show -o tsv --query 'user.name')" >> /home/akdc/status
+
+  # save secrets
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n akdc-pat)" > /home/akdc/.ssh/akdc.pat
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n ssl-crt)" > /home/akdc/.ssh/certs.pem
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n ssl-key)" > /home/akdc/.ssh/certs.key
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n fluent-bit-secret)" > /home/akdc/.ssh/fluent-bit.key
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n prometheus-secret)" > /home/akdc/.ssh/prometheus.key
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n event-hub-secret)" > /home/akdc/.ssh/event-hub.key
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  az login complete" >> /home/akdc/status
 fi
-
-#shellcheck disable=2181
-if [ "$?" != 0 ]
-then
-    echo "$(date +'%Y-%m-%d %H:%M:%S')  Azure login failed" >> /home/akdc/status
-    echo "Azure login failed"
-    exit 1
-fi
-
-set -e
-
-echo "$(date +'%Y-%m-%d %H:%M:%S')  $(az account show -o tsv --query 'user.name')" >> /home/akdc/status
-
-# save secrets
-echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n akdc-pat)" > /home/akdc/.ssh/akdc.pat
-echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n ssl-crt)" > /home/akdc/.ssh/certs.pem
-echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n ssl-key)" > /home/akdc/.ssh/certs.key
-echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n fluent-bit-secret)" > /home/akdc/.ssh/fluent-bit.key
-echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n prometheus-secret)" > /home/akdc/.ssh/prometheus.key
-echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n event-hub-secret)" > /home/akdc/.ssh/event-hub.key
-
-echo "$(date +'%Y-%m-%d %H:%M:%S')  az login complete" >> /home/akdc/status
 
 if [ ! -f .ssh/akdc.pat ]
 then
