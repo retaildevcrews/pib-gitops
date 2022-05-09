@@ -83,6 +83,8 @@ flt env
 - ` flt create -c your-cluster-name`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
+  - If run in to issues, specify `--verbose` to see verbose output
+  - If VM SKU is not available in default region (centralus), specify `-l your-azure-location` to create cluster in different region
 
 ## Update your GitOps repo
 
