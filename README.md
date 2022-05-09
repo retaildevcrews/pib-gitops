@@ -196,11 +196,17 @@ flt delete yourCluster
 
 ## you can skip these steps if you're deleting the repo
 
-# delete your cluster config
+# delete your cluster config & deployments
 rm ips
 rm -rf config/yourClusterName
+rm -rf deploy/apps/yourClusterName
+rm -rf deploy/bootstrap/yourClusterName
+rm -rf deploy/flux/yourClusterName
 
 # commit and push to GitHub
+git add .
+git commit -am "delete cluster config & deployments"
+git push
 
 ```
 
