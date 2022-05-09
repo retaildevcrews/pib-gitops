@@ -78,13 +78,22 @@ flt env
 - Run `az login`
   - Select your subscription if required
 
+## Check availability of VM SKU in Azure region
+
+```bash
+
+# default azure region is centralus
+az vm list-sizes -l yourLocation -o table | grep -e Standard_D4as_v5 -e Standard_D4s_v5
+
+```
+
 ## Create a single cluster fleet
 
-- ` flt create -c your-cluster-name`
+- ` flt create -c your-cluster-name --verbose`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
-  - If run into issues, specify `--verbose` to see verbose output
-  - If VM SKU is not available in default region (centralus), specify `-l your-azure-location` to create cluster in different region
+  - specify `--verbose` to see verbose output
+  - if VM SKU is not available in default region (centralus), specify `-l yourLocation` to create cluster in different region
 
 ## Update your GitOps repo
 
