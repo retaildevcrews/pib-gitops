@@ -8,6 +8,7 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    on-create start" >> "$HOME/status"
 export REPO_BASE=$PWD
 export AKDC_REPO=$GITHUB_REPOSITORY
 export AKDC_GITOPS=true
+
 export PATH="$PATH:$REPO_BASE/bin"
 export GOPATH="$HOME/go"
 

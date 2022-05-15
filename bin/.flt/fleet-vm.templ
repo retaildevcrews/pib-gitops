@@ -5,6 +5,8 @@ export AKDC_ME=akdc
 export HOME="/home/$AKDC_ME"
 
 {
+  echo 'export AKDC_MI={{mi}}'
+
 ####### do not change these values #######
 {{environment}}
 
@@ -69,6 +71,10 @@ echo "${AKDC_ME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/akdc
 touch .sudo_as_admin_successful
 
 cp /usr/share/zoneinfo/America/Chicago /etc/localtime
+
+echo "$(date +'%Y-%m-%d %H:%M:%S')  upgrading" >> status
+apt-get update
+apt-get upgrade -y
 
 # upgrade sshd security
 {
