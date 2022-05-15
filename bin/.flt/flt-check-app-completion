@@ -5,5 +5,4 @@ istio	Istio service mesh
 kustomize	Flux Kustomize operator
 coredns	K8s Core DNS
 metrics-server	Metrics Server
-testapp	Test App (sample app)
 myapp	My App (sample app)

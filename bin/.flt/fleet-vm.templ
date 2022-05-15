@@ -63,7 +63,6 @@ fi
 cd /home/${AKDC_ME} || exit
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  starting" >> status
-echo "$(date +'%Y-%m-%d %H:%M:%S')  flux retries:" >> status
 
 echo "${AKDC_ME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/akdc
 
@@ -146,25 +145,26 @@ gpasswd -a "${AKDC_ME}" sudo
 git clone --depth=1 https://github.com/ohmybash/oh-my-bash.git .oh-my-bash
 cp .oh-my-bash/templates/bashrc.osh-template .bashrc
 
+echo "$AKDC_PAT" > ".ssh/akdc.pat"
+chmod 600 ".ssh/akdc.pat"
+
 # change ownership
-chown -R ${AKDC_ME}:${AKDC_ME} /home/${AKDC_ME}
+chown -R ${AKDC_ME}:${AKDC_ME} "/home/$AKDC_ME"
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  installing base" >> status
 apt-get update
 apt-get install -y apt-utils dialog apt-transport-https ca-certificates
 
-echo "$(date +'%Y-%m-%d %H:%M:%S')  installing az cli" >> /home/akdc/status
-
-# add az cli repo
-curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
-
-if [ "$AKDC_MI" == "" ]
+if [ "$AKDC_MI" != "" ]
 then
-  echo "$(date +'%Y-%m-%d %H:%M:%S')  skipping azure login" >> /home/akdc/status
-  echo "$AKDC_PAT" > .ssh/akdc.pat
-else
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  installing az cli" >> /home/akdc/status
+
+  # add az cli repo
+  curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
+  echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
+
   apt-get update
+
   apt-get install -y azure-cli
 
   echo "$(date +'%Y-%m-%d %H:%M:%S')  az login start" >> /home/akdc/status
