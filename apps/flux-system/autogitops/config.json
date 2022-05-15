@@ -1,0 +1,8 @@
+{
+    "name": "flux-system",
+    "namespace": "flux-system",
+    "fluxBranch": "main",
+    "fluxRepo": "https://github.com/yourTenant/yourRepo",
+    "targetDir": "flux",
+    "targets": [ "all" ]
+}
