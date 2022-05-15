@@ -7,8 +7,8 @@ then
 else
     if [ "$AKDC_SSL" = "" ]
     then
-        echo "$(curl -s http://"$AKDC_FQDN$1")  $(hostname)"
+        echo "$(curl -s http://"$AKDC_FQDN$1")"
     else
-        echo "$(curl -s https://"$AKDC_FQDN$1")  $(hostname)"
+        echo "$(curl -s https://"$AKDC_FQDN$1")"
     fi
 fi

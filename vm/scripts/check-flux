@@ -5,7 +5,7 @@ if [ "$(flux get kustomizations 2>/dev/null | grep -c -e flux-system -e apps -e 
    # verify all kustomizations are Ready
    [ "$(flux get kustomizations 2>/dev/null | grep -e flux-system -e apps -e bootstrap | cut -f2 | grep -c -e False)" = 0 ]
 then
-	echo "$(hostname) success"
+	echo "success"
 else
-	echo "$(hostname) failed"
+	echo "failed"
 fi

@@ -66,19 +66,11 @@ rm -f k9s_Linux_x86_64.tar.gz
 # upgrade Ubuntu
 echo "$(date +'%Y-%m-%d %H:%M:%S')  upgrading" >> "$HOME/status"
 sudo apt-get update
-## todo - for testing
-#sudo apt-get upgrade -y
-#sudo apt-get autoremove -y
+sudo apt-get upgrade -y
+sudo apt-get autoremove -y
 
 sudo chown -R "${AKDC_ME}:${AKDC_ME}" "$HOME"
 {
-  # add path alias
-  echo ""
-  echo "alias path='echo \$PATH | sed \"s/:/\\n/g\" | sort'"
-
-  # todo - eventually remove this
-  echo "alias kic='kivm'"
-  echo "alias flt='kivm'"
   echo ""
   echo "source <(flux completion bash)"
   echo "source <(k3d completion bash)"
@@ -87,7 +79,6 @@ sudo chown -R "${AKDC_ME}:${AKDC_ME}" "$HOME"
 
   echo ""
   echo 'complete -F __start_kubectl k'
-  echo 'complete -F __start_kivm kic'
 } >> "$HOME/akdc.bashrc"
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-install complete" >> "$HOME/status"
