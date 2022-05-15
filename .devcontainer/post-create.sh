@@ -9,17 +9,31 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    post-create start" >> "$HOME/status"
 
 mkdir -p "$HOME/.ssh"
 
+if [ "$GITHUB_TOKEN" != "" ]
+then
+    echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
+    chmod 600 "$HOME/.ssh/akdc.pat"
+fi
+
+# override with personal PAT
 if [ "$PAT" != "" ]
 then
     echo "$PAT" > "$HOME/.ssh/akdc.pat"
     chmod 600 "$HOME/.ssh/akdc.pat"
 fi
 
-# add shared ssh key
-if [ "$AKDC_ID_RSA" != "" ] && [ "$AKDC_ID_RSA_PUB" != "" ]
+# override with Codespaces secret
+if [ "$AKDC_PAT" != "" ]
 then
-    echo "$AKDC_ID_RSA" | base64 -d > "$HOME/.ssh/id_rsa"
-    echo "$AKDC_ID_RSA_PUB" | base64 -d > "$HOME/.ssh/id_rsa.pub"
+    echo "$AKDC_PAT" > "$HOME/.ssh/akdc.pat"
+    chmod 600 "$HOME/.ssh/akdc.pat"
+fi
+
+# add shared ssh key
+if [ "$ID_RSA" != "" ] && [ "$ID_RSA_PUB" != "" ]
+then
+    echo "$ID_RSA" | base64 -d > "$HOME/.ssh/id_rsa"
+    echo "$ID_RSA_PUB" | base64 -d > "$HOME/.ssh/id_rsa.pub"
     chmod 600 "$HOME"/.ssh/id*
 fi
 

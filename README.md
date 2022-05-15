@@ -2,17 +2,20 @@
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
+- `Retail Edge` allows you to quickly create Kubernetes clusters running `k3d` in `Azure VMs`
+- These cluster are intended for learning, dev and test
+- For secure or production clusters, we recommend [AKS Secure Baseline](https://github.com/mspnp/aks-baseline)
+
 ## Platform Team Contacts
 
 - anflinch
 - bartr
 - devwag
 - kevinshah
-- wabrez
 
 ## Prerequisites
 
-> Recommended but not required
+> Recommended learning
 
 - Go through the Kubernetes in Codespaces inner-loop hands-on lab [here](https://github.com/cse-labs/kubernetes-in-codespaces)
   - Repeat until you are comfortable with Codespaces, Kubernetes, Prometheus, Fluent Bit, Grafana, K9s, and our inner-loop process (everything builds on this)
@@ -22,24 +25,16 @@
 ## Click on `Use this template` and create your GitOps repo
 
 - Only clone the main branch
-- Additional instructions reference your new GitHub repo
+- Additional instructions reference your new GitHub repo, not this repo
 
-## Setup your GitHub PAT
+## Verify ci-cd
 
-> GitOps needs a PAT that can push to this repo
->
-> You can use your Codespaces token but it will be deleted when your Codespace is deleted and GitOps will quit working
-
-- Create a Personal Access Token (PAT) in your GitHub account
-  - Grant repo and package access
-  - You can use an existing PAT as long as it has permissions
-  - <https://github.com/settings/tokens>
-
-- Create a personal Codespace secret
-  - <https://github.com/settings/codespaces>
-  - Name: PAT
-  - Value: your PAT
-  - Grant access to this repo and any other repos you want
+- Open the `Actions` tab in your repo at GitHub.com
+  - The action needs read / write permission
+  - You may have to change your default permission
+    - Settings
+      - Actions
+        - General
 
 ## Create a Codespace
 
@@ -54,13 +49,11 @@ Once Codespaces is running:
 
 ## Validate your setup
 
-> It is a best practice to close the first shell and start a new one - sometimes the shell starts before setup is complete
+> It is a best practice to close the first shell and start a new one - sometimes the shell starts before setup is complete and isn't fully configured
 
 ```bash
 
-# check your PAT - the three values should be the same
-# if PAT is not set correctly, delete this Codespace and follow the instructions above for setting up your PAT
-echo $PAT
+# check your PAT - the two values should be the same
 echo $AKDC_PAT
 echo $GITHUB_TOKEN
 
@@ -68,37 +61,60 @@ echo $GITHUB_TOKEN
 flt env
 
 # output
-AKDC_GITOPS=true
-AKDC_PAT=yourPAT
-AKDC_REPO=thisRepoTenant/thisRepoName
+# AKDC_GITOPS=true
+# AKDC_PAT=yourPAT
+# AKDC_REPO=yourRepoTenant/yourRepoName
 
 ```
 
-## Save your PAT
+## Set Flux repo and branch
 
-- The setup script uses this PAT to setup GitOps
+- Edit `apps/flux-system/autogitops/config.json`
+  - Set `fluxRepo` and `fluxBranch`
+  - Git commit and push
 
-```bash
-
-echo "$GITHUB_TOKEN" > "$HOME/.ssh/akdc.pat"
-chmod 600 "$HOME/.ssh/akdc.pat"
-
-```
-
-## Login to azure
+## Login to Azure
 
 - Run `az login`
   - Select your subscription if required
 
+## Check availability of VM SKU in Azure region
+
+```bash
+
+# default azure region is centralus
+az vm list-sizes -l yourLocation -o table | grep -e Standard_D4as_v5 -e Standard_D4s_v5
+
+```
+
 ## Create a single cluster fleet
 
-- ` flt create -c your-cluster-name`
+- ` flt create -c your-cluster-name --verbose`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
+  - specify `--verbose` to see verbose output
+  - if VM SKU is not available in default region (centralus), specify `-l yourLocation` to create cluster in different region
+
+## Update your GitOps repo
+
+```bash
+
+# you should see new files from ci-cd
+# if you don't, check the Actions tab
+git pull
+
+# add and commit the ips file
+git add .
+git commit -am "added ips file"
+git push
+
+```
 
 ## Check setup status
 
-> The `flt check` commands will fail until SSHD is running, so you may get errors for 30 second or so
+> flt is the fleet CLI provided by Retail Edge / Pilot-in-a-Box
+>
+> The `flt check` commands will fail until SSHD is running, so you may get errors for 30 seconds or so
 
 - Run until you get a status of "complete"
   - Usually 4-5 min
@@ -111,8 +127,6 @@ flt check setup
 ```
 
 ## Check your Fleet
-
-> flt is the fleet CLI provided by Retail Edge / Pilot-in-a-Box
 
 ```bash
 
@@ -133,6 +147,9 @@ flt pull
 ## Deploy the Reference App
 
 - IMDb is the reference app
+- Normally, the apps would be in separate repos
+  - We include the reference app in this repo for convenience
+  - Heartbeat and Istio are `bootstrap services` and should be in this repo
 
 ```bash
 
@@ -144,7 +161,7 @@ flt targets list
 # clear the targets if not []
 flt targets clear
 
-# add the central region as a target
+# add your cluster as a target
 flt targets add yourClusterName
 
 # deploy the changes
@@ -157,23 +174,26 @@ flt targets deploy
 - <https://github.com/retaildevcrews/edge-gitops/actions>
   - your action should be queued or in-progress
 
-## Action not running
-
-- If your action is not running within 10-15 seconds
-  - Verify that the Action is enabled
-  - If the action fails, verify that the token has read and write access
-
 ## Check deployment
 
 - Once the action completes successfully
 
 ```bash
 
+# you should see imdb added to your cluster
+git pull
+
 # force flux to sync
+# flux will sync on a schedule - this command forces it to sync now for debugging
 flt sync
 
 # check that imdb is deployed to your cluster
 flt check app imdb
+
+# curl the IMDb endpoints
+flt curl /version
+flt curl /healthz
+flt curl /readyz
 
 ```
 
@@ -183,13 +203,21 @@ flt check app imdb
 
 git pull
 
-flt cluster delete
+flt delete yourCluster
 
-# delete your cluster config
+## you can skip these steps if you're deleting the repo
+
+# delete your cluster config & deployments
 rm ips
 rm -rf config/yourClusterName
+rm -rf deploy/apps/yourClusterName
+rm -rf deploy/bootstrap/yourClusterName
+rm -rf deploy/flux/yourClusterName
 
 # commit and push to GitHub
+git add .
+git commit -am "delete cluster config & deployments"
+git push
 
 ```
 
@@ -205,23 +233,44 @@ rm -rf config/yourClusterName
 
   ```bash
 
-  flt create -g my-fleet -c central-tx-atx-801
-  flt create -g my-fleet -c east-ga-atl-801
-  flt create -g my-fleet -c west-wa-sea-801
+  flt create -g my-fleet \
+    -c central-tx-atx-801 \
+    -c east-ga-atl-801 \
+    -c west-wa-sea-801
 
   ```
 
+## Setup your GitHub PAT
+
+> GitOps needs a PAT that can push to this repo
+>
+> You can use your Codespaces token but it will be deleted when your Codespace is deleted and GitOps will quit working
+
+### For production, you want to use a service account instead of your individual account
+
+- Create a Personal Access Token (PAT) in your GitHub account
+  - Grant repo and package access
+  - You can use an existing PAT as long as it has permissions
+  - <https://github.com/settings/tokens>
+
+- Create a personal Codespace secret
+  - <https://github.com/settings/codespaces>
+  - Name: PAT
+  - Value: your PAT
+  - Grant access to this repo and any other repos you want
+
 ## Setup your Azure Subscription
 
-- If you plan to use Azure Arc or HCI
+- If you plan to use Azure Arc
   - Request a `sponsored subscription` from AIRS
-- todo - additional setup is required
-  - domain name
-  - DNS
-  - SSL wildcard cert
-  - Managed Identity
-  - Key Vault
-  - Service Principal
+- Additional setup is required
+  - Contact the Platform Team for more details
+    - domain name
+    - DNS
+    - SSL wildcard cert
+    - Managed Identity
+    - Key Vault
+    - Service Principal
 
 ## How to file issues and get help
 
