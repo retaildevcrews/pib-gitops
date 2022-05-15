@@ -1,4 +1,4 @@
-# Retail Edge Onboarding
+# Creating a Retail Edge Fleet
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -6,21 +6,16 @@
 - These cluster are intended for learning, dev and test
 - For secure or production clusters, we recommend [AKS Secure Baseline](https://github.com/mspnp/aks-baseline)
 
-## Platform Team Contacts
-
-- anflinch
-- bartr
-- devwag
-- kevinshah
-
 ## Prerequisites
 
-> Recommended learning
-
-- Go through the Kubernetes in Codespaces inner-loop hands-on lab [here](https://github.com/cse-labs/kubernetes-in-codespaces)
-  - Repeat until you are comfortable with Codespaces, Kubernetes, Prometheus, Fluent Bit, Grafana, K9s, and our inner-loop process (everything builds on this)
-- Go through the GitOps Automation [Quick Start](https://github.com/bartr/autogitops)
-  - Repeat until you are comfortable (GitOps builds on this)
+- Required Learning
+  - Go through the Kubernetes in Codespaces inner-loop hands-on lab [here](https://github.com/cse-labs/kubernetes-in-codespaces)
+  - Repeat until you are comfortable with Codespaces, Kubernetes, Prometheus, Fluent Bit, Grafana, K9s, and our inner-loop process
+    - Everything is built on this
+- Recommended Learning
+  - Go through the GitOps Automation [Quick Start](https://github.com/bartr/autogitops)
+    - Repeat until you are comfortable
+      - GitOps is built on this
 
 ## Click on `Use this template` and create your GitOps repo
 
@@ -138,10 +133,6 @@ flt list
 # if not, please reach out to the Platform Team for support
 flt check heartbeat
 
-# update the fleet
-# (run twice if there are updates so you can see it's clean)
-flt pull
-
 ```
 
 ## Deploy the Reference App
@@ -221,7 +212,7 @@ git push
 
 ```
 
-## Create a Fleet
+## Create a multi-cluster Fleet
 
 - We generally group our fleets together in one resource group
 - An example of creating a 3 cluster fleet
@@ -278,11 +269,12 @@ This project uses GitHub Issues to track bugs and feature requests. Please searc
 
 For help and questions about using this project, please open a GitHub issue.
 
-### Engineering Docs
+## Platform Team Contacts
 
-- Team Working [Agreement](.github/WorkingAgreement.md)
-- Team [Engineering Practices](.github/EngineeringPractices.md)
-- CSE Engineering Fundamentals [Playbook](https://github.com/Microsoft/code-with-engineering-playbook)
+- anflinch
+- bartr
+- devwag
+- kevinshah
 
 ## Contributing
 
