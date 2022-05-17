@@ -162,7 +162,7 @@ flt targets deploy
 
 ## Check that your GitHub Action is running
 
-- <https://github.com/retaildevcrews/yourRepo/actions>
+- <https://github.com/yourOrg/yourRepo/actions>
   - your action should be queued or in-progress
 
 ## Check deployment
