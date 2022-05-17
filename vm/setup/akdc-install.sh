@@ -63,6 +63,17 @@ wget "https://github.com/derailed/k9s/releases/download/${VERSION}/k9s_Linux_x86
 sudo tar -zxvf k9s_Linux_x86_64.tar.gz -C /usr/local/bin
 rm -f k9s_Linux_x86_64.tar.gz
 
+# install cli
+cd "$HOME/bin" || exit
+
+tag=$(curl -s https://api.github.com/repos/retaildevcrews/akdc/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
+
+wget -O kivm.tar.gz https://github.com/retaildevcrews/akdc/releases/download/$tag/kivm-$tag-linux-amd64.tar.gz
+tar -zxvf kivm.tar.gz
+rm -f kivm.tar.gz
+
+cd "$OLDPWD" || exit
+
 # upgrade Ubuntu
 echo "$(date +'%Y-%m-%d %H:%M:%S')  upgrading" >> "$HOME/status"
 sudo apt-get update
