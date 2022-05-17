@@ -50,7 +50,7 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
 mkdir -p "$HOME/bin"
 cd "$HOME/bin" || exit
 
-tag=$(curl -s https://github.com/repos/retaildevcrews/akdc/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
+tag=$(curl -s https://api.github.com/repos/retaildevcrews/akdc/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
 
 wget -O flt.tar.gz https://github.com/retaildevcrews/akdc/releases/download/$tag/flt-$tag-linux-amd64.tar.gz
 wget -O kic.tar.gz https://github.com/retaildevcrews/akdc/releases/download/$tag/kic-$tag-linux-amd64.tar.gz
