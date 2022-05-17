@@ -24,6 +24,9 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     #shellcheck disable=2016,2028
     echo 'hsort() { read -r; printf "%s\\n" "$REPLY"; sort }'
 
+    # add path alias
+    echo "alias path='echo \$PATH | sed \"s/:/\\\n/g\" | sort'"
+
     echo "export REPO_BASE=$REPO_BASE"
     echo "export AKDC_REPO=$AKDC_REPO"
     echo "export AKDC_GITOPS=$AKDC_GITOPS"
