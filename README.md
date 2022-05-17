@@ -70,7 +70,7 @@ flt env
 
 ## Login to Azure
 
-- Run `az login`
+- Run `az login --use-device-code`
   - Select your subscription if required
 
 ## Check availability of VM SKU in Azure region
@@ -162,7 +162,7 @@ flt targets deploy
 
 ## Check that your GitHub Action is running
 
-- <https://github.com/retaildevcrews/edge-gitops/actions>
+- <https://github.com/yourOrg/yourRepo/actions>
   - your action should be queued or in-progress
 
 ## Check deployment
@@ -191,6 +191,9 @@ flt curl /readyz
 ## Delete your test cluster
 
 ```bash
+
+# change to the repo base dir
+cd $REPO_BASE
 
 git pull
 
