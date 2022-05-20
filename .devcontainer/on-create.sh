@@ -32,7 +32,7 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     echo "export AKDC_GITOPS=$AKDC_GITOPS"
 
     # add cli to path
-    echo "export PATH=\$PATH:$PWD/bin"
+    echo "export PATH=\$PATH:$HOME/bin"
     echo "export GOPATH=\$HOME/go"
 
     echo ""
