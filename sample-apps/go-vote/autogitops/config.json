@@ -1,0 +1,10 @@
+{
+    "imageName": "ghcr.io/cse-labs/go-vote",
+    "imageTag": "latest",
+    "name": "vote",
+    "namespace": "vote",
+    "targetDir": "apps",
+    "targets": [
+        "all"
+    ]
+}

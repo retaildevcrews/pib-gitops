@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#name: vote
+#short: Build and deploy the vote app to the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+cd "$REPO_BASE" || exit
+
+# delete local deployment
+kubectl delete -f deploy/app --ignore-not-found=true --wait=false
+
+kic build vote
+
+# deploy local app and re-deploy webv
+kubectl apply -f deploy
+kubectl apply -R -f deploy/app --wait=false

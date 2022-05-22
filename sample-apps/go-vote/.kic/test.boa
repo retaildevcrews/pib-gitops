@@ -1,0 +1,13 @@
+###
+# test commands
+###
+
+command
+	name: test
+	short: Run integration and load tests
+
+boaCommand
+	path: /test-integration
+
+boaCommand
+	path: /test-load

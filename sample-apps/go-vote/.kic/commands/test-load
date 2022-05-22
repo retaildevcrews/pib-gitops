@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#name: load
+#short: Run a load test
+
+cd "$REPO_BASE/csapp/webv" || exit
+
+webv --server http://localhost:30080 -f benchmark.json -r -l 10 --duration 30

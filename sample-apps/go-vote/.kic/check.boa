@@ -1,0 +1,16 @@
+###
+# check commands
+###
+
+command
+	name: check
+	short: Check status on the local k3d cluster
+
+boaCommand
+	path: check/all
+
+boaCommand
+	path: check/app
+
+boaCommand
+	path: check/webv

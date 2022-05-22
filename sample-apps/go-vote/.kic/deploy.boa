@@ -1,0 +1,13 @@
+###
+# deploy commands
+###
+
+command
+	name: deploy
+	short: Build and deploy local apps
+
+boaCommand
+	path: deploy/app
+
+boaCommand
+	path: deploy/webv

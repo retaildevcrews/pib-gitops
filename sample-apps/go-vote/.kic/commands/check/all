@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#name: all
+#short: Run all status checks on the local cluster
+
+echo "Checking vote app"
+kic check vote
+
+echo "Checking WebV"
+kic check webv

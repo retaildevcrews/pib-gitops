@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{gitops.name}}
+  namespace: {{gitops.namespace}}
+  labels:
+    app.kubernetes.io/name: {{gitops.name}}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxSurge: 1
+       maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{gitops.name}}
+  template:
+    metadata:
+      labels:
+        app: {{gitops.name}}
+    spec:
+      containers:
+        - name: app
+          image: {{gitops.imageName}}:{{gitops.imageTag}}
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "32Mi"
+              cpu: "100m"
+            requests:
+              memory: "32Mi"
+              cpu: "100m"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          args:
+          - -url
+          - /badapp
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{gitops.name}}
+  namespace: {{gitops.namespace}}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{gitops.name}}
+    
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{gitops.name}}-https
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{gitops.config.domain}}`) && PathPrefix(`/badapp/`)
+      kind: Rule
+      services:
+        - name: {{gitops.name}}
+          namespace: {{gitops.namespace}}
+          kind: Service
+          port: 8080
+  tls:
+    secretName: ssl-cert

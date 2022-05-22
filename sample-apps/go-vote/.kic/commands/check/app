@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#name: vote
+#short: Check vote app status on the local cluster
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+# readyz
+http localhost:30080/readyz
+
+# healthz
+http localhost:30080/healthz
+
+# version
+http localhost:30080/version
+
+# api/votes
+http localhost:30080/api/votes

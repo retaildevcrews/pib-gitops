@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: vote
+  labels:
+    app.kubernetes.io/name: vote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+
+        - name: redis
+          image: redis
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 6379
+              protocol: TCP
+
+          # readinessProbe:
+          #   initialDelaySeconds: 5
+          #   failureThreshold: 60
+          #   periodSeconds: 2
+          #   httpGet:
+          #     path: /readyz
+          #     port: 8080
+
+          # livenessProbe:
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 60
+          #   httpGet:
+          #     path: /healthz
+          #     port: 8080
+
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: vote
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: redis

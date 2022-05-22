@@ -1,0 +1,8 @@
+###
+# root description and commands
+###
+
+root
+	name: kic
+	short: Kubernetes in Codespaces CLI
+	long: Kubernetes in Codespaces CLI\n\n  A dynamic CLI for automating many Kubernetes development tasks

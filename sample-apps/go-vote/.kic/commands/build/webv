@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#name: webv
+#short: Build WebValidate and push to the local registry
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+cd "$REPO_BASE" || exit
+
+# build and push the local docker image
+docker build webv -t k3d-registry.localhost:5500/webv-vote:local
+docker push k3d-registry.localhost:5500/webv-vote:local
+
+docker build webv -t ghcr.io/cse-labs/webv-vote:beta
+docker build webv -t ghcr.io/cse-labs/webv-vote:latest

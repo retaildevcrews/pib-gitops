@@ -1,0 +1,13 @@
+###
+# build commands
+###
+
+command
+	name: build
+	short: Build local apps
+
+boaCommand
+	path: build/app
+
+boaCommand
+	path: build/webv

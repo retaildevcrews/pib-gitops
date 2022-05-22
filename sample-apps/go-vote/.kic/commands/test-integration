@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#name: integration
+#short: Run an integration test
+
+cd "$REPO_BASE/csapp/webv" || exit
+
+webv --summary tsv --server http://localhost:30080 \
+--files baseline.json baseline.json baseline.json baseline.json baseline.json \
+        baseline.json baseline.json baseline.json baseline.json baseline.json

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#name: vote
+#short: Build the vote app and push to the local registry
+
+# change to this directory
+#cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+cd "$REPO_BASE" || exit
+
+# build and push the local image
+docker build . -t k3d-registry.localhost:5500/go-vote:local
+docker push k3d-registry.localhost:5500/go-vote:local
+
+# build cse-labs image
+docker build . -t ghcr.io/cse-labs/go-vote:beta
+docker build . -t ghcr.io/cse-labs/go-vote:latest
