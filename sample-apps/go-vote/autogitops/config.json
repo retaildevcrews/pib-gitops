@@ -4,7 +4,5 @@
     "name": "vote",
     "namespace": "vote",
     "targetDir": "apps",
-    "targets": [
-        "all"
-    ]
+    "targets": [ ]
 }
