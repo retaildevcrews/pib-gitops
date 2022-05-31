@@ -84,7 +84,7 @@ az vm list-sizes -l yourLocation -o table | grep -e Standard_D4as_v5 -e Standard
 
 ## Create a single cluster fleet
 
-- ` flt create -c your-cluster-name --verbose`
+- `flt create -c your-cluster-name --verbose`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
   - specify `--verbose` to see verbose output
@@ -265,6 +265,14 @@ git push
     - Managed Identity
     - Key Vault
     - Service Principal
+    > NOTE: Update `.devcontainer` for your fleet repository to add these env variables for an on-going updates to fleet
+
+      ```bash
+
+        export AKDC_SSL=yourSSL
+        export AKDC_DNS_RG=yourDNSRg
+
+      ```
 
 ## How to file issues and get help
 
