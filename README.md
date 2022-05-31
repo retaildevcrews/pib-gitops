@@ -265,6 +265,11 @@ git push
     - Managed Identity
     - Key Vault
     - Service Principal
+  > NOTE: Udate `post-create` script for devcontainer to add these env variables to execute flt commands across the sessions
+          ```
+            export AKDC_SSL=yourSSL
+            export AKDC_DNS_RG=yourDNSRg
+          ```
 
 ## How to file issues and get help
 
