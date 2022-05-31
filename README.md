@@ -265,7 +265,7 @@ git push
     - Managed Identity
     - Key Vault
     - Service Principal
-    > NOTE: Udate `.devcontainer` for your fleet repository to add these env variables for an on-going updates to fleet
+    > NOTE: Update `.devcontainer` for your fleet repository to add these env variables for an on-going updates to fleet
 
       ```bash
 
