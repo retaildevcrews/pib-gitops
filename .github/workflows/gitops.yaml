@@ -1,30 +1,41 @@
-name: GitOps Deploy
+name: Secure-Build
 
 on:
-
+  workflow_dispatch:
   push:
-    paths:
-    - '.github/workflows/gitops.yaml'
-    - '**/autogitops/**'
-    - 'config/**'
+
+# concurrency: transform
+# env:
 
 jobs:
-
-  build:
-
-    runs-on: ubuntu-20.04
-
+  gitops:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Repo
+      uses: actions/checkout@v2
 
-    - name: Docker pull
-      run: |
-        docker pull ghcr.io/retaildevcrews/autogitops:beta
+    - name: Docker Pull
+      run: docker pull ghcr.io/bartr/goa:beta
 
-    - name: GitOps Deploy
+    - name: Git Config
       run: |
-        docker run \
-        --name ago \
-        --rm \
-        -v $(pwd):/ago \
-        ghcr.io/retaildevcrews/autogitops:beta
+        git config --global user.email "autogitops@outlook.com"
+        git config --global user.name "autogitops"
+
+    - name: GitOps Automation
+      run: |
+        docker run --rm \
+          -v $PWD:/goa/fleet \
+          -v $PWD:/goa/control \
+          ghcr.io/bartr/goa:beta
+
+    - name: Commit GitOps changes
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          git pull
+          git add .
+          git commit -m "GitOps Secure Build"
+          git push
+        else
+          echo "No changes found"
+        fi
