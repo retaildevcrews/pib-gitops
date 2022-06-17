@@ -1,8 +1,8 @@
-# Creating a Retail Edge Fleet
+# Creating a Dev/Test Fleet
 
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-- `Retail Edge` allows you to quickly create Kubernetes clusters running `k3d` in `Azure VMs`
+- `Pilot in a Box` allows you to quickly create Kubernetes clusters running `K3s` in `Azure VMs`
 - These cluster are intended for learning, dev and test
 - For secure or production clusters, we recommend [AKS Secure Baseline](https://github.com/mspnp/aks-baseline)
 
@@ -64,8 +64,8 @@ flt env
 
 ## Set Flux repo and branch
 
-- Edit `apps/flux-system/autogitops/config.json`
-  - Set `fluxRepo` and `fluxBranch`
+- Edit `apps/flux-system/app.yaml`
+  - Set `repo` and `branch`
   - Git commit and push
 
 ## Login to Azure
@@ -87,7 +87,7 @@ az vm list-sizes -l yourLocation -o table | grep -e Standard_D4as_v5 -e Standard
 - `flt create -c your-cluster-name --verbose`
   - do not specify `--arc` if you are using a normal AIRS subscription
   - do not specify `--ssl` unless you have domain, DNS, and wildcard cert setup
-  - specify `--verbose` to see verbose output
+  - specify `--verbose` to see verbose errors
   - if VM SKU is not available in default region (centralus), specify `-l yourLocation` to create cluster in different region
 
 ## Update your GitOps repo
@@ -107,7 +107,7 @@ git push
 
 ## Check setup status
 
-> flt is the fleet CLI provided by Retail Edge / Pilot-in-a-Box
+> flt is the fleet CLI provided by Pilot-in-a-Box
 >
 > The `flt check` commands will fail until SSHD is running, so you may get errors for 30 seconds or so
 
@@ -152,8 +152,8 @@ flt targets list
 # clear the targets if not []
 flt targets clear
 
-# add your cluster as a target
-flt targets add yourClusterName
+# add all clusters as a target
+flt targets add all
 
 # deploy the changes
 flt targets deploy
@@ -203,14 +203,12 @@ flt delete yourCluster
 
 # delete your cluster config & deployments
 rm ips
-rm -rf config/yourClusterName
-rm -rf deploy/apps/yourClusterName
-rm -rf deploy/bootstrap/yourClusterName
-rm -rf deploy/flux/yourClusterName
+rm -f  clusters/yourClusterName.yaml
+rm -rf clusters/yourClusterName
 
 # commit and push to GitHub
 git add .
-git commit -am "delete cluster config & deployments"
+git commit -am "delete cluster"
 git push
 
 ```
@@ -274,33 +272,16 @@ git push
 
       ```
 
-## How to file issues and get help
+## Support
 
-This project uses GitHub Issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates. For new issues, file your bug or feature request as a new issue.
-
-For help and questions about using this project, please open a GitHub issue.
-
-## Platform Team Contacts
-
-- anflinch
-- bartr
-- devwag
-- kevinshah
+This project uses GitHub Issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates.  For new issues, file your bug or feature request as a new issue.
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>
+This project welcomes contributions and suggestions and has adopted the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html).
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+For more information see [Contributing.md](./.github/CONTRIBUTING.md)
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services.
-
-Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+This project may contain trademarks or logos for projects, products, or services. Any use of third-party trademarks or logos are subject to those third-party's policies.
