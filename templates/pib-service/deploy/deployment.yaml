@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{coral.app}}
+  namespace: {{coral.namespace}}
+  labels:
+    app.kubernetes.io/name: {{coral.app}}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxSurge: 1
+       maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{coral.app}}
+  template:
+    metadata:
+      labels:
+        app: {{coral.app}}
+    spec:
+      containers:
+      - name: {{coral.app}}
+        image: {{coral.image}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{coral.port}}
+        resources:
+          limits:
+            cpu: 400m
+            memory: 128Mi
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: {{coral.port}}
+          initialDelaySeconds: 10
+          periodSeconds: 10
