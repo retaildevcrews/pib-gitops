@@ -1,5 +1,5 @@
 {
-	"name": "GitOps",
+	"name": "Pilot-in-a-Box",
 	"dockerFile": "Dockerfile",
 
 	// do not change these if you want Docker in Docker support
