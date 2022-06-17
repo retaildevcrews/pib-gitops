@@ -1,0 +1,10 @@
+app: vtlog
+environment: dev
+image: ghcr.io/retaildevcrews/vtlog:latest
+imageName: ghcr.io/retaildevcrews/vtlog
+imageTag: latest
+name: vtlog
+namespace: vtlog
+target: dev
+targets: [ ]
+workspace: vtlog

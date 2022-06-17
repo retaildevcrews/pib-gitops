@@ -1,8 +1,0 @@
-{
-    "name": "badapp",
-    "namespace": "badapp",
-    "imageName": "ghcr.io/cse-labs/heartbeat",
-    "imageTag": "latest",
-    "targetDir": "apps",
-    "targets": [ ]
-}

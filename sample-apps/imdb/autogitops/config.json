@@ -1,8 +1,0 @@
-{
-    "imageName": "ghcr.io/cse-labs/imdb-app",
-    "imageTag": "latest",
-    "name": "imdb",
-    "namespace": "imdb",
-    "targetDir": "apps",
-    "targets": [ ]
-}
