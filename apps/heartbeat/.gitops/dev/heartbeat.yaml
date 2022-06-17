@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{gitops.name}}
-  namespace: {{gitops.namespace}}
+  name: heartbeat
+  namespace: heartbeat
   labels:
-    app.kubernetes.io/name: {{gitops.name}}
+    app.kubernetes.io/name: heartbeat
 spec:
   replicas: 1
   strategy:
@@ -14,15 +14,15 @@ spec:
        maxUnavailable: 1
   selector:
     matchLabels:
-      app: {{gitops.name}}
+      app: heartbeat
   template:
     metadata:
       labels:
-        app: {{gitops.name}}
+        app: heartbeat
     spec:
       containers:
         - name: app
-          image: {{gitops.imageName}}:{{gitops.imageTag}}
+          image: ghcr.io/cse-labs/heartbeat:latest
           imagePullPolicy: Always
           ports:
             - name: http
@@ -39,8 +39,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{gitops.name}}
-  namespace: {{gitops.namespace}}
+  name: heartbeat
+  namespace: heartbeat
 spec:
   type: ClusterIP
   ports:
@@ -49,26 +49,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{gitops.name}}
-
----
-
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: {{gitops.name}}-vs
-  namespace: {{gitops.namespace}}
-spec:
-  hosts:
-    - "*"
-  gateways:
-    - istio-system/istio-gateway
-  http:
-    - match:
-        - uri:
-            prefix: "/heartbeat"
-      route:
-        - destination:
-            host: {{gitops.name}}
-            port:
-              number: 8080
+    app: heartbeat

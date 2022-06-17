@@ -1,0 +1,7 @@
+app: heartbeat
+environment: dev
+name: heartbeat
+namespace: heartbeat
+target: dev
+targets: [ all ]
+workspace: heartbeat
