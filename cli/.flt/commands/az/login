@@ -1,0 +1,3 @@
+#!/bin/bash
+
+az login --service-principal --username "$AZ_ID" --tenant "$AZ_TENANT" --password "$AZ_KEY"

@@ -1,0 +1,29 @@
+###
+# Azure commands
+###
+
+commands:
+  - name: az
+    short: Azure CLI commands (customized)
+
+    boaCommands:
+    - name: groups
+      short: List Azure Groups for the current subscription
+      path: az/groups
+
+    - name: login
+      short: Login to Azure using Service Principal
+      path: az/login
+
+    - name: logout
+      short: Logout of Azure
+      path: az/logout
+
+    - name: vms
+      short: List Azure VMs for an RG
+      path: az/vms
+
+    fltCommands:
+    - name: arc-token
+      short: Get Arc token from each cluster
+      path: arc-token

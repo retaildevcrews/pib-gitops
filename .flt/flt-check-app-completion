@@ -1,8 +1,0 @@
-heartbeat	Heartbeat app
-imdb	IMDb reference app
-jumpbox	Jump Box (bastion host)
-istio	Istio service mesh
-kustomize	Flux Kustomize operator
-coredns	K8s Core DNS
-metrics-server	Metrics Server
-myapp	My App (sample app)
