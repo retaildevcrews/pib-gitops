@@ -6,7 +6,7 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: your-branch
+    branch: reef
   secretRef:
     name: flux-system
-  url: https://github.com/retaildevcrews/reef
+  url: https://github.com/retaildevcrews/gitops-template
