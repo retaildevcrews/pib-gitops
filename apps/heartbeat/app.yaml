@@ -4,4 +4,4 @@ name: heartbeat
 namespace: heartbeat
 target: dev
 targets: [ all ]
-workspace: heartbeat
+workspace: bootstrap

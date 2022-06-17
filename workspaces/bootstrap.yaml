@@ -1,4 +1,4 @@
 kind: Workspace
 metadata:
-  name: redis
+  name: bootstrap
 spec: {}
