@@ -2,6 +2,7 @@
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  flux bootstrap start" >> "$HOME/status"
 
+# make sure flux is installed
 if [ ! "$(flux --version)" ]
 then
   echo "$(date +'%Y-%m-%d %H:%M:%S')  flux not found" >> "$HOME/status"
@@ -9,6 +10,7 @@ then
   exit 1
 fi
 
+# make sure the branch is set
 if [ -z "$AKDC_BRANCH" ]
 then
   echo "$(date +'%Y-%m-%d %H:%M:%S')  AKDC_BRANCH not set" >> "$HOME/status"
@@ -17,6 +19,7 @@ then
   exit 1
 fi
 
+# make sure cluster name is set
 if [ -z "$AKDC_CLUSTER" ]
 then
   echo "$(date +'%Y-%m-%d %H:%M:%S')  AKDC_CLUSTER not set" >> "$HOME/status"
@@ -25,6 +28,7 @@ then
   exit 1
 fi
 
+# make sure PAT is set
 if [ ! -f /home/akdc/.ssh/akdc.pat ]
 then
   echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc.pat not found" >> "$HOME/status"
@@ -33,60 +37,24 @@ then
   exit 1
 fi
 
-status_code=1
-retry_count=0
+git pull
 
-until [ $status_code == 0 ]; do
+kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system/namespace.yaml"
+flux create secret git flux-system -n flux-system --url "https://github.com/$AKDC_REPO" -u gitops -p "$AKDC_PAT"
+flux create secret git gitops -n flux-system --url "https://github.com/$AKDC_REPO" -u gitops -p "$AKDC_PAT"
 
-  echo "flux retries: $retry_count"
-  echo "$(date +'%Y-%m-%d %H:%M:%S')  flux retries: $retry_count" >> "$HOME/status"
+kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system/controllers.yaml"
+sleep 3
+kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system/source.yaml"
+sleep 2
+kubectl apply -R -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system"
+sleep 5
 
-  if [ $retry_count -gt 0 ]
-  then
-    sleep $((RANDOM % 30+15))
-  fi
-
-  retry_count=$((retry_count + 1))
-
-  flux bootstrap git \
-  --url "https://github.com/$AKDC_REPO" \
-  --branch "$AKDC_BRANCH" \
-  --password "$(cat /home/akdc/.ssh/akdc.pat)" \
-  --token-auth true \
-  --path "./deploy/bootstrap/$AKDC_CLUSTER"
-
-  status_code=$?
-done
-
-echo "adding flux sources"
-echo "$(date +'%Y-%m-%d %H:%M:%S')  adding flux sources" >> "$HOME/status"
-
-flux create secret git gitops \
-  --url "https://github.com/$AKDC_REPO" \
-  --password "$(cat /home/akdc/.ssh/akdc.pat)" \
-  --username gitops
-
-flux create source git gitops \
---url "https://github.com/$AKDC_REPO" \
---branch "$AKDC_BRANCH" \
---secret-ref gitops
-
-flux create kustomization bootstrap \
---source GitRepository/gitops \
---path "./deploy/bootstrap/$AKDC_CLUSTER" \
---prune true \
---interval 1m
-
-flux create kustomization apps \
---source GitRepository/gitops \
---path "./deploy/apps/$AKDC_CLUSTER" \
---prune true \
---interval 1m
-
+# force flux to sync
 flux reconcile source git gitops
 
+# display results
 kubectl get pods -A
-
 flux get kustomizations
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  flux bootstrap complete" >> "$HOME/status"

@@ -11,6 +11,8 @@ docker pull ghcr.io/cse-labs/webv-red:beta
 
 kubectl run jumpbox --image=ghcr.io/cse-labs/jumpbox --restart=Always
 
+kivm sync
+
 kubectl get pods -A
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-post complete" >> "$HOME/status"

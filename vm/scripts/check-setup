@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "$(tail -n1 "$HOME/status")"
+tail -n1 status
