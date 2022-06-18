@@ -12,7 +12,7 @@ export AKDC_GITOPS=true
 #export AKDC_SSL=cseretail.com
 #export AKDC_DNS_RG=tld
 
-export PATH="$PATH:$REPO_BASE/cli"
+export PATH="$PATH:$REPO_BASE/bin"
 export GOPATH="$HOME/go"
 
 mkdir -p "$HOME/.ssh"
@@ -36,7 +36,7 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     echo 'hsort() { read -r; printf "%s\\n" "$REPLY"; sort }'
 
     # add cli to path
-    echo "export PATH=\$PATH:$REPO_BASE/cli"
+    echo "export PATH=\$PATH:$REPO_BASE/bin"
     echo "export GOPATH=\$HOME/go"
 
     echo "export REPO_BASE=$REPO_BASE"

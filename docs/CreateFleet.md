@@ -22,9 +22,9 @@
 
 - Create 3 personal Codespace secrets
   - <https://github.com/settings/codespaces>
-  - AKDC_SP_ID
-  - AKDC_TENANT
-  - AKDC_SP_KEY
+  - AZ_SP_ID
+  - AZ_TENANT
+  - AZ_SP_KEY
   - Grant access to this repo and any other repos you want
 
 - Create a new Codespaces from the main branch

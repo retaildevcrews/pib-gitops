@@ -1,0 +1,237 @@
+#!/bin/bash
+
+# temporarily set $HOME
+export AKDC_ME=akdc
+export HOME="/home/$AKDC_ME"
+
+{
+  echo 'export AKDC_MI={{mi}}'
+
+####### do not change these values #######
+{{environment}}
+
+  # add command line params last so they don't get overwritten
+  echo 'export AKDC_ME=akdc'
+  echo 'export AKDC_FQDN="{{fqdn}}"'
+  echo 'export AKDC_DEBUG="{{debug}}"'
+  echo 'export AKDC_DAPR="{{dapr}}"'
+  echo 'export AKDC_REPO="{{repo}}"'
+  echo 'export AKDC_BRANCH="{{branch}}"'
+  echo 'export AKDC_CLUSTER="{{cluster}}"'
+  echo 'export AKDC_ARC_ENABLED="{{arcEnabled}}"'
+  echo 'export AKDC_RESOURCE_GROUP="{{group}}"'
+  echo 'export AKDC_DO="{{do}}"'
+  echo 'export AKDC_ZONE="{{zone}}"'
+  echo 'export AKDC_DNS_RG="{{dnsRG}}"'
+  echo ""
+} >> "/home/$AKDC_ME/akdc.bashrc"
+
+# source the env vars
+source "/home/$AKDC_ME/akdc.bashrc"
+
+export DEBIAN_FRONTEND=noninteractive
+export HOME=/root
+
+### Needed for Digital Ocean
+if [ "$AKDC_DO" = "true" ]
+then
+  useradd -m -s /bin/bash ${AKDC_ME}
+  mkdir -p /home/${AKDC_ME}/.ssh
+  cp /root/.ssh/authorized_keys /home/${AKDC_ME}/.ssh
+
+  # disable login
+  cd /home/${AKDC_ME}/.ssh || exit
+  mv authorized_keys ak
+
+  # extract the values to files in .ssh
+  #shellcheck disable=2002
+  cat ak | grep SP_NAME | cut -f4 -d ' ' | base64 -d > sp_name
+  #shellcheck disable=2002
+  cat ak | grep SP_KEY | cut -f4 -d ' ' | base64 -d > sp_key
+  #shellcheck disable=2002
+  cat ak | grep SP_TENANT | cut -f4 -d ' ' | base64 -d > sp_tenant
+
+  # remove the SP_* from authorized keys
+#  cat ak | grep -v SP_ > authorized_keys
+#  rm -f ak
+  mv ak authorized_keys
+
+  # chmod or remove the SP_* files
+  chmod 600 ~/.ssh/sp_*
+
+  cd ..
+fi
+
+cd /home/${AKDC_ME} || exit
+
+echo "$(date +'%Y-%m-%d %H:%M:%S')  starting" >> status
+
+echo "${AKDC_ME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/akdc
+
+touch .sudo_as_admin_successful
+
+cp /usr/share/zoneinfo/America/Chicago /etc/localtime
+
+echo "$(date +'%Y-%m-%d %H:%M:%S')  upgrading" >> status
+apt-get update
+apt-get upgrade -y
+
+# upgrade sshd security
+{
+  echo ""
+  echo "ClientAliveInterval 120"
+  echo "Port 2222"
+  echo "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+} >> /etc/ssh/sshd_config
+
+# restart sshd
+systemctl restart sshd
+
+echo "$(date +'%Y-%m-%d %H:%M:%S')  user config" >> status
+# backup bashrc
+cp /etc/bash.bashrc /etc/bash.bashrc.bak
+
+# source .bashrc for non-interactive logins
+sed -i "s/\[ -z \"\$PS1\" ] && return//" /etc/bash.bashrc
+
+# add patch to global bashrc
+{
+  echo ""
+  echo "source /home/$AKDC_ME/akdc.bashrc"
+} >> /etc/bash.bashrc
+
+
+# save the bashrc patch
+# shellcheck disable=2016
+{
+  echo "export PATH=\$PATH:\$HOME/gitops/vm/bin"
+  echo ""
+  echo "shopt -s expand_aliases"
+  echo ""
+  echo "alias k='kubectl'"
+  echo "alias kaf='kubectl apply -f'"
+  echo "alias kdelf='kubectl delete -f'"
+  echo "alias kj='kubectl exec -it jumpbox -- bash -l'"
+  echo "alias kje='kubectl exec -it jumpbox -- '"
+  echo ""
+} >> akdc.bashrc
+
+# configure git CLI
+git config --system user.name autogitops
+git config --system user.email autogitops@outlook.com
+git config --system core.whitespace blank-at-eol,blank-at-eof,space-before-tab
+git config --system pull.rebase false
+git config --system init.defaultbranch main
+git config --system fetch.prune true
+git config --system core.pager more
+
+# make some directories we will need
+mkdir -p "/home/${AKDC_ME}/.ssh"
+mkdir -p "/home/${AKDC_ME}/.kube"
+mkdir -p "/home/${AKDC_ME}/bin"
+mkdir -p "/home/${AKDC_ME}/.local/bin"
+mkdir -p "/home/${AKDC_ME}/.k9s"
+mkdir -p /root/.kube
+
+# make some system dirs
+mkdir -p /etc/docker
+mkdir -p /prometheus
+chown -R 65534:65534 /prometheus
+mkdir -p /grafana
+chown -R 472:0 /grafana
+
+# create / add to groups
+groupadd docker
+usermod -aG sudo "${AKDC_ME}"
+usermod -aG admin "${AKDC_ME}"
+usermod -aG docker "${AKDC_ME}"
+gpasswd -a "${AKDC_ME}" sudo
+
+# setup oh my bash
+git clone --depth=1 https://github.com/ohmybash/oh-my-bash.git .oh-my-bash
+cp .oh-my-bash/templates/bashrc.osh-template .bashrc
+
+echo "$AKDC_PAT" > ".ssh/akdc.pat"
+chmod 600 ".ssh/akdc.pat"
+
+# change ownership
+chown -R ${AKDC_ME}:${AKDC_ME} "/home/$AKDC_ME"
+
+echo "$(date +'%Y-%m-%d %H:%M:%S')  installing base" >> status
+apt-get update
+apt-get install -y apt-utils dialog apt-transport-https ca-certificates
+
+if [ "$AKDC_MI" != "" ]
+then
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  installing az cli" >> /home/akdc/status
+
+  # add az cli repo
+  curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
+  echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list
+
+  apt-get update
+
+  apt-get install -y azure-cli
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  az login start" >> /home/akdc/status
+  if [ "$AKDC_DO" = "true" ]
+  then
+    # login to Azure using the SP
+    az login --service-principal --username "$(cat .ssh/sp_name)" --tenant "$(cat .ssh/sp_tenant)" --password "$(cat .ssh/sp_key)" -o table
+    sudo -HEu akdc az login --service-principal --username "$(cat .ssh/sp_name)" --tenant "$(cat .ssh/sp_tenant)" --password "$(cat .ssh/sp_key)" -o table
+  else
+    az login --identity -o table
+    sudo -HEu akdc az login --identity -o table
+  fi
+
+  #shellcheck disable=2181
+  if [ "$?" != 0 ]
+  then
+      echo "$(date +'%Y-%m-%d %H:%M:%S')  Azure login failed" >> /home/akdc/status
+      echo "Azure login failed"
+      exit 1
+  fi
+
+  set -e
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  $(az account show -o tsv --query 'user.name')" >> /home/akdc/status
+
+  # save secrets
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n akdc-pat)" > /home/akdc/.ssh/akdc.pat
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n ssl-crt)" > /home/akdc/.ssh/certs.pem
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n ssl-key)" > /home/akdc/.ssh/certs.key
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n fluent-bit-secret)" > /home/akdc/.ssh/fluent-bit.key
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n prometheus-secret)" > /home/akdc/.ssh/prometheus.key
+  echo -n "$(az keyvault secret show --vault-name kv-tld  --query 'value' -o tsv -n event-hub-secret)" > /home/akdc/.ssh/event-hub.key
+
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  az login complete" >> /home/akdc/status
+fi
+
+if [ ! -f .ssh/akdc.pat ]
+then
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc.pat not found" >> status
+  echo "akdc.pat not found"
+  exit 1
+fi
+
+echo "$(date +'%Y-%m-%d %H:%M:%S')  cloning GitHub repos" >> status
+git clone "https://$(cat .ssh/akdc.pat)@github.com/$AKDC_REPO" gitops
+
+# checkout the branch
+if [ "$AKDC_BRANCH" != "main" ]
+then
+  git -C gitops checkout $AKDC_BRANCH
+fi
+
+# change ownership
+chown -R ${AKDC_ME}:${AKDC_ME} /home/${AKDC_ME}
+
+if [ ! -f gitops/vm/setup/akdc-setup.sh ]
+then
+  echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-setup.sh not found" >> status
+  echo "akdc-setup.sh not found"
+  exit 1
+fi
+
+# run the setup script as akdc user
+sudo -HEu akdc gitops/vm/setup/akdc-setup.sh
