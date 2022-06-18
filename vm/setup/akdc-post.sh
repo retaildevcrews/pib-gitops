@@ -11,7 +11,7 @@ docker pull ghcr.io/cse-labs/webv-red:beta
 
 kubectl run jumpbox --image=ghcr.io/cse-labs/jumpbox --restart=Always
 
-kivm sync
+cli/kivm sync
 
 kubectl get pods -A
 
