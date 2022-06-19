@@ -1,0 +1,7 @@
+target: dev
+name: flux-system
+namespace: flux-system
+workspace: flux-system
+repo: retaildevcrews/gitops-template
+branch: reef
+targets: [ all ]

@@ -1,0 +1,8 @@
+app: istio
+environment: dev
+name: istio
+namespace: istio-system
+target: dev
+targets: [ all ]
+template: .gitops
+workspace: istio-system

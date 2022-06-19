@@ -1,0 +1,7 @@
+app: redis
+environment: dev
+name: redis
+namespace: redis
+target: dev
+targets: [ all ]
+workspace: bootstrap

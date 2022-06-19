@@ -1,0 +1,4 @@
+kind: Workspace
+metadata:
+  name: imdb
+spec: {}

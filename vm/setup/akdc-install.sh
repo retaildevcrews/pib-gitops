@@ -48,7 +48,15 @@ sudo apt-get install -y kubectl
 # Install istio CLI
 echo "$(date +'%Y-%m-%d %H:%M:%S')  installing istioctl" >> "$HOME/status"
 echo "Installing istioctl"
-curl -sL https://istio.io/downloadIstioctl | bash -
+
+# istio fails to download on large fleets - install locally if present
+if [ -f "$HOME/gitops/vm/setup/libs/istio-setup.sh" ]
+then
+  "$HOME/gitops/vm/setup/libs/istio-setup.sh"
+else
+  curl -sL https://istio.io/downloadIstioctl | bash -
+fi
+
 sudo mv "$HOME/.istioctl/bin/istioctl" /usr/local/bin
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  installing k3d" >> "$HOME/status"
@@ -63,25 +71,18 @@ wget "https://github.com/derailed/k9s/releases/download/${VERSION}/k9s_Linux_x86
 sudo tar -zxvf k9s_Linux_x86_64.tar.gz -C /usr/local/bin
 rm -f k9s_Linux_x86_64.tar.gz
 
-# install cli
-cd "$HOME/bin" || exit
-
-tag=$(curl -s https://api.github.com/repos/retaildevcrews/akdc/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3)}')
-
-wget -O kivm.tar.gz https://github.com/retaildevcrews/akdc/releases/download/$tag/kivm-$tag-linux-amd64.tar.gz
-tar -zxvf kivm.tar.gz
-rm -f kivm.tar.gz
-
-cd "$OLDPWD" || exit
-
 # upgrade Ubuntu
 echo "$(date +'%Y-%m-%d %H:%M:%S')  upgrading" >> "$HOME/status"
-sudo apt-get update
-sudo apt-get upgrade -y
-sudo apt-get autoremove -y
+# sudo apt-get update
+# sudo apt-get upgrade -y
+# sudo apt-get autoremove -y
 
 sudo chown -R "${AKDC_ME}:${AKDC_ME}" "$HOME"
 {
+  # add path alias
+  echo ""
+  echo "alias path='echo \$PATH | sed \"s/:/\\n/g\" | sort'"
+
   echo ""
   echo "source <(flux completion bash)"
   echo "source <(k3d completion bash)"

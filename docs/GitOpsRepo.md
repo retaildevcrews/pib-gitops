@@ -25,9 +25,9 @@
 - Contact the platform team for AKDC_* values for our subscription
 - Add the following personal GitHub secrets
   - PAT         - your GitHub PAT with repo and package permissions
-  - AKDC_TENANT - Azure tenant ID
-  - AKDC_SP_ID  - Azure Service Principal ID
-  - AKDC_SP_KEY - Azure Service Principal Key
+  - AZ_TENANT - Azure tenant ID
+  - AZ_SP_ID  - Azure Service Principal ID
+  - AZ_SP_KEY - Azure Service Principal Key
 
 ## Add Codespaces Secrets
 
