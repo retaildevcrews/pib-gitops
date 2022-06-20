@@ -1,0 +1,11 @@
+kind: Cluster
+metadata:
+  name: central-tx-hou-101-fleet1
+  labels:
+    environment: dev
+    region: central
+    zone: central-tx
+    district: central-tx-hou
+    store: central-tx-hou-101-fleet1
+    domain: central-tx-hou-101-fleet1.cseretail.com
+spec:
