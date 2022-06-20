@@ -1,0 +1,13 @@
+namespace: {{gitops.namespace}}
+commonLabels:
+  app: {{gitops.name}}
+resources:
+  - account.yaml
+  - rbac.yaml
+  - crd.yaml
+  - deployment.yaml
+  - prometheus.yaml
+images:
+  - name: {{gitops.imageName}}
+    newName: {{gitops.imageName}}
+    newTag: {{gitops.imageTag}}
