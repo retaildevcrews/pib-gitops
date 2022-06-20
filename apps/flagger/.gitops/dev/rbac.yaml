@@ -231,4 +231,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{gitops.name}}
-  namespace: {{gitops.namespace}}
+  namespace: istio-system

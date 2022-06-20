@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{gitops.name}}
-  namespace: {{gitops.namespace}}
+  namespace: istio-system
   labels:
     app: {{gitops.name}}
-    namespace: {{gitops.namespace}}
+    namespace: istio-system
     chart: 1.7.0
     release: flagger-grafana
     heritage: Helm
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          namespace: {{gitops.namespace}}
+          namespace: istio-system
           image: grafana/grafana:7.3.4
           imagePullPolicy: IfNotPresent
           ports:

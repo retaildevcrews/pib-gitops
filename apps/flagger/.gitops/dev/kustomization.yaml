@@ -1,4 +1,4 @@
-namespace: {{gitops.namespace}}
+namespace: istio-system
 commonLabels:
   app: {{gitops.name}}
 resources:

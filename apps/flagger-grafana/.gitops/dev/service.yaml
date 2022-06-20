@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{gitops.name}}
-  namespace: {{gitops.namespace}}
+  namespace: istio-system
   labels:
     app: grafana
     chart: grafana-1.7.0
@@ -25,7 +25,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: {{gitops.name}}-vs
-  namespace: {{gitops.namespace}}
+  namespace: istio-system
 spec:
   gateways:
   - istio-system/istio-gateway

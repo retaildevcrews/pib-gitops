@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{gitops.name}}
-  namespace: {{gitops.namespace}}
+  namespace: istio-system
 spec:
   replicas: 1
   strategy:
