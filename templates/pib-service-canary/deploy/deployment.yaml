@@ -19,17 +19,8 @@ spec:
         prometheus.io/port: '8080'
     spec:
       containers:
-        - name: app
+        - name: {{coral.app}}
           image: {{coral.image}}
           imagePullPolicy: Always
-
-          args:
-          - --zone
-          - central-tx
-          - --region
-          - central
-
           ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
+          - containerPort: 8080
