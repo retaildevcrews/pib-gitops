@@ -55,8 +55,7 @@ spec:
           - --prometheus
           - --run-loop
           - --server
-          - http://central-tx-hou-100-fleet1.cseretail.com
-          - http://central-tx-hou-101-fleet1.cseretail.com
+          - http://imdb:8080
           - --files
           - imdb-benchmark.json
           - --zone
