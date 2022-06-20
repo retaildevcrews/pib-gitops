@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imdb
+  namespace: imdb
+  labels:
+    app.kubernetes.io/name: imdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imdb
+  template:
+    metadata:
+      labels:
+        app: imdb
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/cse-labs/imdb-app:latest
+          imagePullPolicy: Always
+
+          args:
+          - --zone
+          - central-tx
+          - --region
+          - central
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
