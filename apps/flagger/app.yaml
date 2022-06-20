@@ -4,6 +4,7 @@ imageTag: 1.21.0
 name: flagger
 namespace: istio-system
 target: dev
-targets: [ ]
+targets:
+    - all
 template: .gitops
 workspace: istio-system
