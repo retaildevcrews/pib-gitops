@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{coral.app}}
+  namespace: {{coral.namespace}}
+  labels:
+    app.kubernetes.io/name: {{coral.app}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{coral.app}}
+  template:
+    metadata:
+      labels:
+        app: {{coral.app}}
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+    spec:
+      containers:
+        - name: app
+          image: {{coral.image}}
+          imagePullPolicy: Always
+
+          args:
+          - --zone
+          - central-tx
+          - --region
+          - central
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP

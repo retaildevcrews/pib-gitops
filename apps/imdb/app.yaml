@@ -8,5 +8,5 @@ namespace: imdb
 port: 8080
 target: dev
 targets: []
-template: pib-service
+template: pib-service-canary
 workspace: imdb
