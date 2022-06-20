@@ -2,6 +2,6 @@ target: dev
 name: flux-system
 namespace: flux-system
 workspace: flux-system
-repo: retaildevcrews/gitops-template
-branch: kshah-fleet1
+repo: yourTenant/yourRepo
+branch: main
 targets: [ all ]
