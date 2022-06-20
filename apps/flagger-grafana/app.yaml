@@ -1,0 +1,9 @@
+environment: dev
+name: flagger-grafana
+namespace: istio-system
+target: dev
+targets:
+    - all
+template: .gitops
+workspace: istio-system
+subpath: /grafana
