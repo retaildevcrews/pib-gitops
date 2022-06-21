@@ -160,6 +160,8 @@ flt targets deploy
 
 ```
 
+Follow these [instructions](./docs/Canary.md) to use canary deployment strategy using flagger.
+
 ## Check that your GitHub Action is running
 
 - <https://github.com/yourOrg/yourRepo/actions>
