@@ -3,6 +3,7 @@ name: flagger-grafana
 namespace: istio-system
 subpath: /grafana
 target: dev
-targets: []
+targets:
+    - all
 template: .gitops
 workspace: istio-system
