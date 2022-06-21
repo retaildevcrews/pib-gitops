@@ -9,5 +9,5 @@ port: 8080
 target: dev
 targets:
     - all
-template: pib-service-canary
+template: pib-service
 workspace: imdb
