@@ -96,9 +96,10 @@ Flagger comes with a Grafana dashboard made for canary analysis. Install Grafana
 
   ```
 
-Navigate to grafana dashboard by appending `yourHostUrl/grafana` with login info
-- admin
-- change-me
+Navigate to grafana dashboard by appending `/grafana` to the host url in the browser tab.
+- Grafana login info
+  - admin
+  - change-me
 
 
 ![Canary Dahboard](./images/IstioCanaryDashboard.png)
