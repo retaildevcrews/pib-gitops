@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{gitops.name}}
+  namespace: istio-system
+  labels:
+    app: grafana
+    chart: grafana-1.7.0
+    release: flagger-grafana
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{gitops.name}}
+    release: flagger-grafana
+
+---
+
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{gitops.name}}-vs
+  namespace: istio-system
+spec:
+  gateways:
+  - istio-system/istio-gateway
+  hosts:
+  - "*"
+  http:
+  - match:
+    - uri:
+        prefix: {{gitops.subpath}}
+    route:
+    - destination:
+        host: {{gitops.name}}
