@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{coral.app}}
-  namespace: {{coral.namespace}}
+  name: {{gitops.app}}
+  namespace: {{gitops.namespace}}
   labels:
-    app.kubernetes.io/name: {{coral.app}}
+    app.kubernetes.io/name: {{gitops.app}}
 spec:
   replicas: 1
   strategy:
@@ -14,18 +14,18 @@ spec:
        maxUnavailable: 1
   selector:
     matchLabels:
-      app: {{coral.app}}
+      app: {{gitops.app}}
   template:
     metadata:
       labels:
-        app: {{coral.app}}
+        app: {{gitops.app}}
     spec:
       containers:
-      - name: {{coral.app}}
-        image: {{coral.image}}
+      - name: {{gitops.app}}
+        image: {{gitops.image}}
         imagePullPolicy: Always
         ports:
-        - containerPort: {{coral.port}}
+        - containerPort: {{gitops.port}}
         resources:
           limits:
             cpu: 400m
@@ -33,6 +33,6 @@ spec:
         readinessProbe:
           httpGet:
             path: /healthz
-            port: {{coral.port}}
+            port: {{gitops.port}}
           initialDelaySeconds: 10
           periodSeconds: 10

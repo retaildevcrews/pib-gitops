@@ -21,13 +21,13 @@ spec:
           imagePullPolicy: Always
           args:
           - --region
-          - {{gitops.config.region}}
+          - {{gitops.cluster.region}}
           - --zone
-          - {{gitops.config.zone}}
+          - {{gitops.cluster.zone}}
           - --district
-          - {{gitops.config.district}}
+          - {{gitops.cluster.district}}
           - --store
-          - {{gitops.config.store}}
+          - {{gitops.cluster.store}}
           ports:
             - name: http
               containerPort: 8080
@@ -77,7 +77,7 @@ metadata:
   namespace: {{gitops.namespace}}
 spec:
   hosts:
-    - "{{gitops.config.domain}}"
+    - "{{gitops.cluster.domain}}"
   gateways:
     - istio-system/istio-gateway
   http:

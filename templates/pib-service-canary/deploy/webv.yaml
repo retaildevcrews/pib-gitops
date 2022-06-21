@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webv-{{coral.app}}
-  namespace: {{coral.namespace}}
+  name: webv-{{gitops.app}}
+  namespace: {{gitops.namespace}}
   labels:
-    app.kubernetes.io/name: webv-{{coral.app}}
+    app.kubernetes.io/name: webv-{{gitops.app}}
 spec:
   replicas: 1
   strategy:
@@ -14,11 +14,11 @@ spec:
        maxUnavailable: 1
   selector:
     matchLabels:
-      app: webv-{{coral.app}}
+      app: webv-{{gitops.app}}
   template:
     metadata:
       labels:
-        app: webv-{{coral.app}}
+        app: webv-{{gitops.app}}
     spec:
       containers:
         - name: app
@@ -55,7 +55,7 @@ spec:
           - --prometheus
           - --run-loop
           - --server
-          - http://{{coral.app}}:8080
+          - http://{{gitops.app}}:8080
           - --files
           - imdb-benchmark.json
           - --zone
@@ -69,10 +69,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: webv-{{coral.app}}
-  namespace: {{coral.namespace}}
+  name: webv-{{gitops.app}}
+  namespace: {{gitops.namespace}}
   labels:
-    app: webv-{{coral.app}}
+    app: webv-{{gitops.app}}
 spec:
   type: ClusterIP
   ports:
@@ -81,4 +81,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: webv-{{coral.app}}
+    app: webv-{{gitops.app}}

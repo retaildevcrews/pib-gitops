@@ -54,7 +54,7 @@ spec:
       name: http
   selector:
     app: {{gitops.name}}
-    
+
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -65,7 +65,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`{{gitops.config.domain}}`) && PathPrefix(`/badapp/`)
+    - match: Host(`{{gitops.cluster.domain}}`) && PathPrefix(`/badapp/`)
       kind: Rule
       services:
         - name: {{gitops.name}}
