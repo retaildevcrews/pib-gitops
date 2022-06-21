@@ -160,7 +160,7 @@ flt targets deploy
 
 ```
 
-Follow these [instructions](./docs/Canary.md) to use canary deployment strategy using flagger.
+Optionally, follow these [instructions](./docs/Canary.md) to enable automated canary deployment using flagger.
 
 ## Check that your GitHub Action is running
 

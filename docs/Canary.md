@@ -42,6 +42,7 @@ flt sync
 
 # check that flagger is deployed to your cluster
 flt check app flagger
+flt check app prometheus
 
 ```
 
@@ -56,41 +57,48 @@ We also deploy prometheus to scrape metrics to monitor Canary deployment.
 
 Once the github action is completed and flux sync is performed, the reference app should be updated with Canary Deployment objects listed:
 
-```
+> NOTE: We deploy `webv` to generate traffic to the reference app for the canary analysis and rollbacks
 
-    deployment.apps/imdb
-    deployment.apps/imdb-primary
-    service/imdb
-    service/imdb-canary
-    service/imdb-primary
-    destinationrule.networking.istio.io/imdb-canary
-    destinationrule.networking.istio.io/imdb-primary
-    virtualservice.networking.istio.io/imdb
+  ```bash
 
-```
+      deployment.apps/imdb
+      deployment.apps/imdb-primary
+      deployment.apps/webv-imdb
+      service/imdb
+      service/imdb-canary
+      service/imdb-primary
+      service/webv-imdb
+      destinationrule.networking.istio.io/imdb-canary
+      destinationrule.networking.istio.io/imdb-primary
+      virtualservice.networking.istio.io/imdb
+
+  ```
 
 ## Monitoring Canary deployments using Grafana
 
 Flagger comes with a Grafana dashboard made for canary analysis. Install Grafana
 
-```bash
+  ```bash
 
-cd apps/flagger-grafana
+  cd apps/flagger-grafana
 
-# check deploy targets (should be [])
-flt targets list
+  # check deploy targets (should be [])
+  flt targets list
 
-# clear the targets if not []
-flt targets clear
+  # clear the targets if not []
+  flt targets clear
 
-# add all clusters as a target
-flt targets add all
+  # add all clusters as a target
+  flt targets add all
 
-# deploy the changes
-flt targets deploy
+  # deploy the changes
+  flt targets deploy
 
-```
+  ```
 
 Navigate to grafana dashboard by appending `yourHostUrl/grafana` with login info
 - admin
 - change-me
+
+
+![Canary Dahboard](./images/IstioCanaryDashboard.png)
