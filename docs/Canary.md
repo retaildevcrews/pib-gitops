@@ -46,7 +46,7 @@ flt check app prometheus
 
 ```
 
-We also deploy prometheus to scrape metrics to monitor Canary deployment.
+> NOTE: We also deploy prometheus to scrape metrics to monitor Canary deployment.
 
 ## Update reference app to use Canary deployment Strategy
 
@@ -96,10 +96,9 @@ Flagger comes with a Grafana dashboard made for canary analysis. Install Grafana
 
   ```
 
-Navigate to grafana dashboard by appending `/grafana` to the host url in the browser tab.
+Once the github action is completed and flux sync is performed, navigate to grafana dashboard by appending `/grafana` to the host url in the browser tab.
 - Grafana login info
   - admin
   - change-me
-
 
 ![Canary Dahboard](./images/IstioCanaryDashboard.png)
