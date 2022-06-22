@@ -12,7 +12,6 @@ deployments:
       namespace: dogs-cats
       nodePort: 30080
       port: 8080
-      target: dev
       targets: []
       title: Dogs Rule!
       workspace: dogs-cats
