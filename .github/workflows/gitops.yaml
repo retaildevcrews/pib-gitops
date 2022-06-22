@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   push:
 
-# concurrency: transform
-# env:
-
 jobs:
   gitops:
     runs-on: ubuntu-latest
@@ -27,7 +24,7 @@ jobs:
         docker run --rm \
           -v $PWD:/goa/fleet \
           -v $PWD:/goa/control \
-          ghcr.io/bartr/goa:beta
+          ghcr.io/retaildevcrews/goa:beta
 
     - name: Commit GitOps changes
       run: |
