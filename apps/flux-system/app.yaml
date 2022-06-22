@@ -1,7 +1,11 @@
-target: dev
-name: flux-system
-namespace: flux-system
-workspace: flux-system
-repo: yourTenant/yourRepo
-branch: main
-targets: [ all ]
+template: .gitops
+deployments:
+  dev:
+    target: dev
+    values:
+      name: flux-system
+      namespace: flux-system
+      workspace: flux-system
+      repo: yourTenant/yourRepo
+      branch: main
+      targets: [ all ]

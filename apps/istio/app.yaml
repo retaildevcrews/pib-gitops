@@ -1,8 +1,11 @@
-app: istio
-environment: dev
-name: istio
-namespace: istio-system
-target: dev
-targets: [ all ]
 template: .gitops
-workspace: istio-system
+deployments:
+  dev:
+    target: dev
+    values:
+      app: istio
+      environment: dev
+      name: istio
+      namespace: istio-system
+      targets: [ all ]
+      workspace: istio-system

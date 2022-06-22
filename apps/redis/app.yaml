@@ -1,7 +1,11 @@
-app: redis
-environment: dev
-name: redis
-namespace: redis
-target: dev
-targets: [ all ]
-workspace: bootstrap
+template: .gitops
+deployments:
+  dev:
+    target: dev
+    values:
+      app: redis
+      environment: dev
+      name: redis
+      namespace: redis
+      targets: [ all ]
+      workspace: bootstrap
