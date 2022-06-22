@@ -1,9 +1,12 @@
-environment: dev
-imageName: ghcr.io/fluxcd/flagger
-imageTag: 1.21.0
-name: flagger
-namespace: istio-system
-target: dev
-targets: []
 template: .gitops
-workspace: istio-system
+deployments:
+  dev:
+    target: dev
+    values:
+      environment: dev
+      imageName: ghcr.io/fluxcd/flagger
+      imageTag: 1.21.0
+      name: flagger
+      namespace: istio-system
+      targets: []
+      workspace: istio-system
