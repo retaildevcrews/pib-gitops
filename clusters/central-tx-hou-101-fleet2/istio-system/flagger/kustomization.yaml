@@ -1,0 +1,13 @@
+namespace: istio-system
+commonLabels:
+  app: flagger
+resources:
+  - account.yaml
+  - rbac.yaml
+  - crd.yaml
+  - deployment.yaml
+  - prometheus.yaml
+images:
+  - name: ghcr.io/fluxcd/flagger
+    newName: ghcr.io/fluxcd/flagger
+    newTag: 1.21.0
