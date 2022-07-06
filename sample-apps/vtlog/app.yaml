@@ -1,7 +1,7 @@
 app: vtlog
 environment: dev
-image: ghcr.io/retaildevcrews/vtlog:latest
-imageName: ghcr.io/retaildevcrews/vtlog
+image: ghcr.io/cse-labs/pib-tlog:latest
+imageName: ghcr.io/cse-labs/pib-tlog
 imageTag: latest
 name: vtlog
 namespace: vtlog
