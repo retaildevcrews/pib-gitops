@@ -6,6 +6,6 @@ deployments:
       name: flux-system
       namespace: flux-system
       workspace: flux-system
-      repo: yourTenant/yourRepo
-      branch: main
+      repo: retaildevcrews/gitops-template
+      branch: kshah-image-test
       targets: [ all ]
