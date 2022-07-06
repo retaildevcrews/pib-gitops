@@ -1,17 +1,18 @@
 template: vote-service
 deployments:
-  dev:
-    target: dev
-    values:
-      app: dogs-cats
-      environment: dev
-      image: ghcr.io/cse-labs/pib-vote:latest
-      key1: Dogs
-      key2: Cats
-      name: dogs-cats
-      namespace: dogs-cats
-      nodePort: 30080
-      port: 8080
-      targets: []
-      title: Dogs Rule!
-      workspace: dogs-cats
+    dev:
+        target: dev
+        values:
+            app: dogs-cats
+            environment: dev
+            image: ghcr.io/cse-labs/pib-vote:latest
+            key1: Dogs
+            key2: Cats
+            name: dogs-cats
+            namespace: dogs-cats
+            nodePort: 30080
+            port: 8080
+            targets:
+                - all
+            title: Dogs Rule!
+            workspace: dogs-cats
