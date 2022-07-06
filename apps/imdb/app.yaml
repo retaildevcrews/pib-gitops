@@ -12,6 +12,5 @@ deployments:
             port: 8080
             targets: []
             workspace: imdb
-targets:
-    - all
+targets: []
 template: pib-service
