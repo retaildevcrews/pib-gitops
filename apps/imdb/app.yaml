@@ -4,7 +4,6 @@ deployments:
         values:
             app: imdb
             repo: retaildevcrews/gitops-template
-            path: templates/pib-service
             branch: kshah-image-test
             environment: dev
             image: ghcr.io/cse-labs/pib-imdb:latest
