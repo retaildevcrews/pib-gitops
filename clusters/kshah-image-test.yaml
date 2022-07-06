@@ -1,0 +1,11 @@
+kind: Cluster
+metadata:
+  name: kshah-image-test
+  labels:
+    environment: dev
+    region: kshah
+    zone: kshah-image
+    district: kshah-image-test
+    store: kshah-image-test
+    domain: kshah-image-test.cseretail.com
+spec:
