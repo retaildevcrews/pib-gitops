@@ -3,6 +3,7 @@ deployments:
         target: dev
         values:
             app: imdb
+            branch: kshah-image-test
             environment: dev
             image: ghcr.io/cse-labs/pib-imdb:latest
             imageName: ghcr.io/cse-labs/pib-imdb
@@ -12,5 +13,6 @@ deployments:
             port: 8080
             targets: []
             workspace: imdb
-targets: []
+targets:
+    - all
 template: pib-service
