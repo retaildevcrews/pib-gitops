@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Docker Pull
-      run: docker pull ghcr.io/bartr/goa:beta
+      run: docker pull ghcr.io/cse-labs/pib-gitops-automation:beta
 
     - name: Git Config
       run: |
@@ -24,7 +24,7 @@ jobs:
         docker run --rm \
           -v $PWD:/goa/fleet \
           -v $PWD:/goa/control \
-          ghcr.io/retaildevcrews/goa:beta
+          ghcr.io/cse-labs/pib-gitops-automation:beta
 
     - name: Commit GitOps changes
       run: |
