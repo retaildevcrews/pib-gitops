@@ -5,7 +5,7 @@ deployments:
     values:
       app: dogs-cats
       environment: dev
-      image: ghcr.io/cse-labs/go-vote:latest
+      image: ghcr.io/cse-labs/pib-vote:latest
       key1: Dogs
       key2: Cats
       name: dogs-cats

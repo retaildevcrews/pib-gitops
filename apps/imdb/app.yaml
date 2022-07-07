@@ -5,8 +5,8 @@ deployments:
     values:
       app: imdb
       environment: dev
-      image: ghcr.io/cse-labs/imdb-app:latest
-      imageName: ghcr.io/cse-labs/imdb-app
+      image: ghcr.io/cse-labs/pib-imdb:latest
+      imageName: ghcr.io/cse-labs/pib-imdb
       imageTag: latest
       name: imdb
       namespace: imdb
