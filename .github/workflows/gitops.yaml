@@ -3,6 +3,8 @@ name: Secure-Build
 on:
   workflow_dispatch:
   push:
+    paths-ignore:
+    - '**.md'
 
 jobs:
   gitops:
