@@ -165,7 +165,9 @@ Optionally, follow these [instructions](./docs/Canary.md) to enable automated ca
 ## Check that your GitHub Action is running
 
 - <https://github.com/yourOrg/yourRepo/actions>
-  - your action should be queued or in-progress
+  - Your action should be queued or in-progress
+- By default, the action is triggered by any push to a non .md file
+  - To customize for your fleet, follow the [workflow syntax guidance](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore)
 
 ## Check deployment
 
