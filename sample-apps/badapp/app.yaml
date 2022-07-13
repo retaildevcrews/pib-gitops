@@ -1,10 +1,12 @@
-app: badapp
-environment: dev
-image: ghcr.io/retaildevcrews/heartbeat:latest
-imageName: ghcr.io/retaildevcrews/heartbeat
-imageTag: latest
-name: badapp
-namespace: badapp
-target: dev
-targets: [ ]
-workspace: badapp
+template: .gitops
+deployments:
+  dev:
+    target: dev
+    values:
+      app: badapp
+      environment: dev
+      image: ghcr.io/retaildevcrews/heartbeat:latest
+      name: badapp
+      namespace: badapp
+      targets: []
+      workspace: badapp

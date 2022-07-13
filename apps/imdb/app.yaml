@@ -6,8 +6,6 @@ deployments:
       app: imdb
       environment: dev
       image: ghcr.io/cse-labs/pib-imdb:latest
-      imageName: ghcr.io/cse-labs/pib-imdb
-      imageTag: latest
       name: imdb
       namespace: imdb
       port: 8080

@@ -8,6 +8,6 @@ resources:
   - deployment.yaml
   - prometheus.yaml
 images:
-  - name: {{gitops.imageName}}
-    newName: {{gitops.imageName}}
-    newTag: {{gitops.imageTag}}
+  - name: ghcr.io/fluxcd/flagger
+    newName: ghcr.io/fluxcd/flagger
+    newTag: 1.21.0

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: {{gitops.imageName}}:{{gitops.imageTag}}
+          image: {{gitops.image}}
           imagePullPolicy: Always
           args:
           - --region
