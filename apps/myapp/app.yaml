@@ -1,4 +1,4 @@
-template: pib-service-canary
+template: pib-service
 deployments:
     dev:
         target: dev
