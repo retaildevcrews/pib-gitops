@@ -1,0 +1,13 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: myapp
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./clusters/kshah-ebc-test/myapp
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: gitops
