@@ -5,7 +5,7 @@ deployments:
         values:
             app: myapp
             environment: dev
-            image: ghcr.io/retaildevcrews/myapp:0.0.2
+            image: ghcr.io/retaildevcrews/myapp:bad
             name: myapp
             namespace: myapp
             port: 8080
