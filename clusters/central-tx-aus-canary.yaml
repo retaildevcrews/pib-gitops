@@ -1,0 +1,11 @@
+kind: Cluster
+metadata:
+  name: central-tx-aus-canary
+  labels:
+    environment: dev
+    region: central
+    zone: central-tx
+    district: central-tx-aus
+    store: central-tx-aus-canary
+    domain: central-tx-aus-canary.cseretail.com
+spec:
