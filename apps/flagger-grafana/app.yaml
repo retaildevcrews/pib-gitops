@@ -1,11 +1,12 @@
 template: .gitops
 deployments:
-  dev:
-    target: dev
-    values:
-      environment: dev
-      name: flagger-grafana
-      namespace: istio-system
-      subpath: /grafana
-      targets: []
-      workspace: istio-system
+    dev:
+        target: dev
+        values:
+            environment: dev
+            name: flagger-grafana
+            namespace: istio-system
+            subpath: /grafana
+            targets:
+                - all
+            workspace: istio-system
