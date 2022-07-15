@@ -7,5 +7,5 @@ deployments:
       namespace: flux-system
       workspace: flux-system
       repo: retaildevcrews/pib-gitops
-      branch: kshah-ebc-test
+      branch: canary-demo
       targets: [ all ]
