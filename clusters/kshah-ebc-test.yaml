@@ -1,0 +1,11 @@
+kind: Cluster
+metadata:
+  name: kshah-ebc-test
+  labels:
+    environment: dev
+    region: kshah
+    zone: kshah-ebc
+    district: kshah-ebc-test
+    store: kshah-ebc-test
+    domain: kshah-ebc-test.cseretail.com
+spec:
