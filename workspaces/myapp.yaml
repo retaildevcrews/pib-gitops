@@ -1,4 +1,4 @@
 kind: Workspace
 metadata:
-  name: imdb
+  name: myapp
 spec: {}
