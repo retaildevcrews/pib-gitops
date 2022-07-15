@@ -57,7 +57,7 @@ spec:
           - --server
           - http://{{gitops.app}}:8080
           - --files
-          - imdb-benchmark.json
+          - myapp-benchmark.json
           - --zone
           - dev
           - --region
