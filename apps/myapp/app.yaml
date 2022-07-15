@@ -1,11 +1,11 @@
-template: pib-service-canary
+template: pib-service
 deployments:
     dev:
         target: dev
         values:
             app: myapp
             environment: dev
-            image: ghcr.io/retaildevcrews/myapp:bad
+            image: ghcr.io/retaildevcrews/myapp:0.0.1
             name: myapp
             namespace: myapp
             port: 8080
