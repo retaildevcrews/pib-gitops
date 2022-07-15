@@ -51,7 +51,7 @@ spec:
               cpu: "250m"
           args:
           - --sleep
-          - "1000"
+          - "500"
           - --prometheus
           - --run-loop
           - --server
