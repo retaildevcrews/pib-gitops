@@ -11,5 +11,6 @@ deployments:
             name: myapp
             namespace: myapp
             port: 8080
-            targets: []
+            targets:
+                - all
             workspace: myapp
