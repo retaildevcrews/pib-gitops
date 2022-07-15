@@ -7,7 +7,7 @@ deployments:
             environment: dev
             image: ghcr.io/retaildevcrews/myapp:0.0.1
             imageName: ghcr.io/retaildevcrews/myapp
-            imageTag: 0.0.1
+            imageTag: 0.0.2
             name: myapp
             namespace: myapp
             port: 8080
