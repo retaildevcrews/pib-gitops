@@ -1,0 +1,10 @@
+template: .gitops
+deployments:
+    dev:
+        target: dev
+        values:
+            environment: dev
+            name: voe
+            namespace: voe
+            targets: [ ]
+            workspace: voe
