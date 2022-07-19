@@ -7,8 +7,6 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    post-create start" >> "$HOME/status"
 
 # secrets are not available during on-create
 
-mkdir -p "$HOME/.ssh"
-
 if [ "$PAT" != "" ]
 then
     echo "$PAT" > "$HOME/.ssh/akdc.pat"
@@ -23,7 +21,7 @@ then
     chmod 600 "$HOME"/.ssh/id*
 fi
 
-# add shared ssh key
+# add shared ssl key
 if [ "$CSE_RETAIL_CERT" != "" ] && [ "$CSE_RETAIL_KEY" != "" ]
 then
     echo "$CSE_RETAIL_CERT" | base64 -d > "$HOME/.ssh/certs.pem"

@@ -117,8 +117,8 @@ sed -i "s/\[ -z \"\$PS1\" ] && return//" /etc/bash.bashrc
 } >> akdc.bashrc
 
 # configure git CLI
-git config --system user.name autogitops
-git config --system user.email autogitops@outlook.com
+git config --system user.name pib-gitops
+git config --system user.email pib-gitops@outlook.com
 git config --system core.whitespace blank-at-eol,blank-at-eof,space-before-tab
 git config --system pull.rebase false
 git config --system init.defaultbranch main
@@ -214,7 +214,7 @@ then
   exit 1
 fi
 
-echo "$(date +'%Y-%m-%d %H:%M:%S')  cloning GitHub repos" >> status
+echo "$(date +'%Y-%m-%d %H:%M:%S')  cloning GitHub repo" >> status
 git clone "https://$(cat .ssh/akdc.pat)@github.com/$AKDC_REPO" gitops
 
 # checkout the branch

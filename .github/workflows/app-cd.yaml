@@ -1,0 +1,59 @@
+name: App-CD
+
+on:
+  repository_dispatch:
+
+jobs:
+  invoke-cd:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Git Config
+        if: github.event.action == 'app-cd'
+        run: |
+          git config --global user.email "pib-gitops@outlook.com"
+          git config --global user.name "pib-gitops"
+          git config --global credential.helper store
+          mkdir -p ~/.git/config
+          echo "https://pib-gitops:${{ secrets.GHCR_PAT }}@github.com/" > ~/.git/config/credentials
+
+      - name: Checkout Repo
+        if: github.event.action == 'app-cd'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.branch }}
+
+      - name: Docker Pull
+        if: github.event.action == 'app-cd'
+        run: docker pull ghcr.io/cse-labs/pib-gitops-automation:beta
+
+      - name: GitOps Automation
+        if: github.event.action == 'app-cd'
+        run: |
+          # run GitOps Automation
+          app=""
+
+          if [ "${{ github.event.client_payload.app }}" != "" ]
+          then
+            app="--app ${{ github.event.client_payload.app }}"
+          fi
+
+          # run GitOps Automation
+          docker run --rm \
+            -v $PWD:/goa/fleet \
+            -v $PWD:/goa/control \
+            ghcr.io/cse-labs/pib-gitops-automation:beta \
+            --github-token ${{ secrets.GHCR_PAT }} \
+            $app
+
+      - name: Commit GitOps changes
+        if: github.event.action == 'app-cd'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git pull
+            git add .
+            git commit -m "GitOps Secure Build"
+            git push
+          else
+            echo "No changes found"
+          fi

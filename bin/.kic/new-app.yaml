@@ -1,0 +1,14 @@
+commands:
+- name: new
+  short: Create a new application
+  commands:
+  - name: dotnet
+    short: Create a new dotnet 6 application
+    scriptCommands:
+      - name: console
+        short: Create a new dotnet console application
+        path: new/dotnet/console
+
+      - name: webapi
+        short: Create a new dotnet WebApi application
+        path: new/dotnet/webapi

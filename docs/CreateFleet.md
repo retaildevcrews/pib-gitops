@@ -6,9 +6,7 @@
 
 - anflinch
 - bartr
-- devwag
 - kevinshah
-- wabrez
 
 ## Create a Fleet
 
@@ -18,33 +16,15 @@
 
 ## Create a fleet in the shared subscription
 
-> Request the Azure Service Principal credentials from the Platform Team
-
-- Create 3 personal Codespace secrets
-  - <https://github.com/settings/codespaces>
-  - AZ_SP_ID
-  - AZ_TENANT
-  - AZ_SP_KEY
-  - Grant access to this repo and any other repos you want
+> Request access to this repo from the platform team
 
 - Create a new Codespaces from the main branch
-- You may be able to restart your exising Codespace
-
-## Validate your Secrets
-
-```bash
-
-# From your Codespaces terminal
-# verify that your secrets are set
-env | grep AKDC_
-
-```
 
 ## Login to Azure using the Service Principal
 
 ```bash
 
-flt az-login
+flt az login
 
 ```
 
@@ -69,27 +49,109 @@ git push -u origin your-fleet
 
 ```
 
-- Follow the instructions in create.sh
-  - replace 'your-fleet'
-  - replace `your-cluster`
-  - uncomment `flt create ...` line
-- Run `./create.sh`
-- If everything works
-  - duplicate the `flt create ...` line for each cluster
-  - change `yourClusterName`
-    - do not change your fleet name
-  - Comment the first `flt create ...` line
-  - Run `./create.sh` again
+## Check Env Vars
 
-- Update delete.sh
-  - delete each cluster you created
-  - delete your resource group
+- Update as required
+  - You can run `code ~/.zshrc` to make the changes permanent
+    - You will need to restart your shell
+
+    ```bash
+
+    flt env
+
+    ```
+
+    - Output
+
+    ```text
+
+    AKDC_DNS_RG=tld
+    AKDC_GITOPS=true
+    AKDC_HUB_NAME=voe-iot-hub
+    AKDC_MI=/subscriptions/...
+    AKDC_PAT=ghp_...
+    AKDC_REPO=retaildevcrews/bartr-fleet
+    AKDC_SSL=cseretail.com
+
+    ```
+
+## Check your .ssh directory for secrets
+
+```bash
+
+ll ~/.ssh
+
+```
+
+- Output
+
+  ```text
+
+  -rw------- 1 vscode vscode   41 Jun 28 15:30 akdc.pat
+  -rw------- 1 vscode vscode 1.7K Jun 28 15:30 certs.key
+  -rw------- 1 vscode vscode 6.2K Jun 28 15:30 certs.pem
+  -rw------- 1 vscode vscode 1.7K Jun 28 15:30 id_rsa
+  -rw------- 1 vscode vscode  381 Jun 28 15:30 id_rsa.pub
+
+  ```
+
+## Create Your Fleet
+
+- Single Cluster Fleet
+
+  ```bash
+
+  # lower case only
+  # choose a different number than "123"
+  # region in [ central east west ]
+  # format:
+  #  region-state-city-storeNumber
+
+  flt create -c central-tx-dfw-123
+
+  ```
 
 ## Delete Fleet
 
-- Once you're done with your fleet, please delete to free up quota
-- Run `/.delete.sh`
-- Delete your branch if no longer needed
+- Single Cluster Fleet
+
+  ```bash
+
+  # use the same name as you created
+  flt delete central-tx-dfw-123
+
+  ```
+
+## Create a multi-cluster Fleet
+
+  ```bash
+
+  # choose a different number than "123"
+  # change "yourAlias"
+
+  flt create \
+    -g yourAlias-fleet
+    -c central-tx-dfw-123 \
+    -c east-ga-atl-123 \
+    -c west-wa-sea-123
+
+  ```
+
+- Delete Your Fleet
+
+  ```bash
+
+  # use the same names as you created
+
+  # delete each DNS entry
+  flt delete central-tx-dfw-123
+  flt delete east-ga-atl-123
+  flt delete west-wa-sea-123
+
+  # delete the Azure resource group
+  flt delete yourAlias-fleet
+
+  ```
 
 ## Create a fleet in your Azure subscription
 

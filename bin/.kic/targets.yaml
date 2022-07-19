@@ -1,0 +1,23 @@
+commands:
+- name: targets
+  short: Manage GitOps targets
+  scriptCommands:
+    - name: add
+      short: Add a GitOps target
+      path: targets/add
+
+    - name: clear
+      short: Clear all GitOps targets
+      path: targets/clear
+
+    - name: deploy
+      short: Deploy to the target clusters
+      path: targets/deploy
+
+    - name: list
+      short: List current targets
+      path: targets/list
+
+    - name: remove
+      short: Remove a GitOps targets
+      path: targets/remove

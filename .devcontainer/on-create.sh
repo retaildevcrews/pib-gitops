@@ -9,13 +9,14 @@ echo "$(date +'%Y-%m-%d %H:%M:%S')    on-create start" >> "$HOME/status"
 export REPO_BASE=$PWD
 export AKDC_REPO=$GITHUB_REPOSITORY
 export AKDC_GITOPS=true
-#export AKDC_SSL=cseretail.com
-#export AKDC_DNS_RG=tld
+export AKDC_SSL=cseretail.com
+export AKDC_DNS_RG=tld
 
 export PATH="$PATH:$REPO_BASE/bin"
 export GOPATH="$HOME/go"
 
 mkdir -p "$HOME/.ssh"
+mkdir -p "$HOME/go"
 mkdir -p "$HOME/.oh-my-zsh/completions"
 
 {
@@ -32,9 +33,6 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
 } > "$HOME/.flt"
 
 {
-    #shellcheck disable=2016,2028
-    echo 'hsort() { read -r; printf "%s\\n" "$REPLY"; sort }'
-
     # add cli to path
     echo "export PATH=\$PATH:$REPO_BASE/bin"
     echo "export GOPATH=\$HOME/go"
@@ -44,6 +42,7 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
     echo "export AKDC_GITOPS=$AKDC_GITOPS"
     echo "export AKDC_SSL=$AKDC_SSL"
     echo "export AKDC_DNS_RG=$AKDC_DNS_RG"
+    echo "export PIB_GHCR=ghcr.io/cse-labs"
 
     echo ""
     echo "if [ \"\$PAT\" != \"\" ]"
@@ -61,7 +60,20 @@ mkdir -p "$HOME/.oh-my-zsh/completions"
 
 # echo "generating completions"
 flt completion zsh > "$HOME/.oh-my-zsh/completions/_flt"
+kic completion zsh > "$HOME/.oh-my-zsh/completions/_kic"
 kubectl completion zsh > "$HOME/.oh-my-zsh/completions/_kubectl"
+
+echo "create local registry"
+docker network create k3d
+k3d registry create registry.localhost --port 5500
+docker network connect k3d k3d-registry.localhost
+
+echo "create the cluster"
+kic cluster create
+
+echo "pull images"
+docker pull mcr.microsoft.com/dotnet/sdk:6.0
+docker pull mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 
 # only run apt upgrade on pre-build
 if [ "$CODESPACE_NAME" = "null" ]

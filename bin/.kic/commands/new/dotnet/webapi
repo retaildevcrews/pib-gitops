@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# update the app name if a valid name
+export APP_NAME=$1
+export APP_LOWER=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
+
+if ! [[ "$APP_NAME" =~ ^[A-Z][A-Za-z][A-Za-z][A-Za-z][A-Za-z]+$ ]]
+then
+    echo "Invalid App Name $1"
+    exit 0
+fi
+
+if [ -d "$APP_LOWER" ]
+then
+    echo "Directory $APP_LOWER already exists"
+    exit 0
+fi
+
+git pull
+git clone https://github.com/retaildevcrews/dotnet-webapi-template "$APP_LOWER"
+cd "$APP_LOWER" || exit
+
+rm -rf .devcontainer
+rm -rf .git
+rm -rf .github
+rm -f .gitignore
+rm -f LICENSE
+rm -f curl.sh
+
+mv src/csapp.csproj "src/$APP_LOWER.csproj"
+
+# replace CSApp and csapp
+find . -type f -exec sed -i "s|\$REPO_BASE/csapp|$PWD|g" {} \;
+find . -type f -exec sed -i "s/CSApp/$APP_NAME/g" {} \;
+find . -type f -exec sed -i "s/csapp/$APP_LOWER/g" {} \;
+find . -type f -exec sed -i "s|\$PIB_GHCR|$PIB_GHCR|g" {} \;
+
+mkdir -p secrets
+echo "imdb" > secrets/Database
+echo "movies" > secrets/Table
+echo "dev" > secrets/Environment
+
+dotnet restore src
+
+if [ -d ../../workspaces ]
+then
+cat <<EOF > "../../workspaces/$APP_LOWER.yaml"
+kind: Workspace
+metadata:
+name: $APP_LOWER
+spec: {}
+EOF
+
+    git pull
+    git add ../../workspaces
+fi
+
+git pull
+git add ..
+# git commit -m "added $1"
