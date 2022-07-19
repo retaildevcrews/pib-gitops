@@ -18,6 +18,21 @@ fi
 kubectl create serviceaccount admin-user
 kubectl create clusterrolebinding admin-user-binding --clusterrole cluster-admin --serviceaccount default:admin-user
 
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-user
+  annotations:
+    kubernetes.io/service-account.name: admin-user
+type: kubernetes.io/service-account-token
+EOF
+
+# save Arc portal key
+rm -f "$HOME/.ssh/arc.key"
+kubectl get secret admin-user -o jsonpath='{$.data.token}' | base64 -d | sed $'s/$/\\\n/g' > "$HOME/.ssh/arc.key"
+chmod 600 "$HOME/.ssh/arc.key"
+
 if [ -f /home/akdc/.ssh/fluent-bit.key ]
 then
     kubectl create ns fluent-bit

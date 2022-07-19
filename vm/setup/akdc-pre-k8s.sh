@@ -15,5 +15,10 @@ docker network create k3d
 k3d registry create registry.localhost --port 5500
 docker network connect k3d k3d-registry.localhost
 
+# add the host name to /etc/hosts
+{
+  echo "" | sudo tee -a /etc/hosts
+  echo "127.0.0.1 $(hostname)"
+} | sudo tee -a /etc/hosts
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-pre-k3d complete" >> "$HOME/status"

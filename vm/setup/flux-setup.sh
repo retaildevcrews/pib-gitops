@@ -2,6 +2,12 @@
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  flux bootstrap start" >> "$HOME/status"
 
+# setup Arc enabled flux
+if [ "$AKDC_ARC_ENABLED" = "true" ]
+then
+  exit 0
+fi
+
 # make sure flux is installed
 if [ ! "$(flux --version)" ]
 then
@@ -39,15 +45,15 @@ fi
 
 git pull
 
-kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system/namespace.yaml"
+kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/namespace.yaml"
 flux create secret git flux-system -n flux-system --url "https://github.com/$AKDC_REPO" -u gitops -p "$AKDC_PAT"
 flux create secret git gitops -n flux-system --url "https://github.com/$AKDC_REPO" -u gitops -p "$AKDC_PAT"
 
-kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system/controllers.yaml"
+kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/controllers.yaml"
 sleep 3
-kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system/source.yaml"
+kubectl apply -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/source.yaml"
 sleep 2
-kubectl apply -R -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system/flux-system"
+kubectl apply -R -f "$HOME/gitops/clusters/$AKDC_CLUSTER/flux-system"
 sleep 5
 
 # force flux to sync

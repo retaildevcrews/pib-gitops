@@ -6,8 +6,8 @@
 
 echo "$(date +'%Y-%m-%d %H:%M:%S')  akdc-post start" >> "$HOME/status"
 
-docker pull ghcr.io/cse-labs/pib-webv:latest
-docker pull ghcr.io/cse-labs/pib-webv:beta
+docker pull ghcr.io/cse-labs/webv-red:latest
+docker pull ghcr.io/cse-labs/webv-red:beta
 
 kubectl run jumpbox --image=ghcr.io/cse-labs/jumpbox --restart=Always
 
