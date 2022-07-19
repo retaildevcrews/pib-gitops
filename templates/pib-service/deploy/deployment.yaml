@@ -19,6 +19,8 @@ spec:
     metadata:
       labels:
         app: {{gitops.app}}
+      annotations:
+        version: v-{{gitops.version}}
     spec:
       containers:
       - name: {{gitops.app}}
